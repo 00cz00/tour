@@ -17,7 +17,7 @@ public class UserController {
     @GetMapping("/userById")
     public UserEntity getUserById(String id){
 
-        System.out.println("");
+
 
        return userService.getUserById(id);
 
