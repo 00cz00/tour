@@ -13,4 +13,6 @@ public interface UserService  {
     User login(String email, String password);
 
     void reg(String email, String password, String username,String url);
+
+    void followee(String userId,String id);
 }
