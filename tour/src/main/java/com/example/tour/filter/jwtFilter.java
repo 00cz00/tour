@@ -14,7 +14,7 @@ import javax.xml.transform.Result;
 import java.io.IOException;
 import java.security.URIParameter;
 
-//@WebFilter(urlPatterns = "/*")
+@WebFilter(urlPatterns = "/*")
 public class jwtFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -24,7 +24,7 @@ public class jwtFilter implements Filter {
         System.out.println(url);
 
 
-        if(url.contains("/userById")){
+        if(url.contains("/login")||url.contains("/reg")){
             filterChain.doFilter(servletRequest,servletResponse);
             return;
         }

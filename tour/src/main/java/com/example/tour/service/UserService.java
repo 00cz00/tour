@@ -1,10 +1,16 @@
 package com.example.tour.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.tour.entity.UserEntity;
+import com.example.tour.dto.UserLoginDTO;
+import com.example.tour.entity.User;
 
-public interface UserService extends IService<UserEntity> {
+public interface UserService  {
 
 
-    UserEntity getUserById(String id);
+    User getUserById(String id);
+
+
+    User login(String email, String password);
+
+    void reg(String email, String password, String username,String url);
 }
