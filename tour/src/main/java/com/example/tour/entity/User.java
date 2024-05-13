@@ -1,12 +1,11 @@
 package com.example.tour.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class UserEntity {
+public class User {
     private String id;
     private String username;
     private String password;

@@ -1,4 +1,4 @@
 package com.example.tour.vo;
 
-public class user {
+public class UserVO {
 }

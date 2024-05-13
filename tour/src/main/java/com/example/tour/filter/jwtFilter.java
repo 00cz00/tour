@@ -14,7 +14,7 @@ import javax.xml.transform.Result;
 import java.io.IOException;
 import java.security.URIParameter;
 
-@WebFilter(urlPatterns = "/*")
+//@WebFilter(urlPatterns = "/*")
 public class jwtFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
