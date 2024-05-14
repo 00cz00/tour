@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tour.mapper.ScenicSpotMapper">
+
+    <select id="page" resultType="com.example.tour.entity.ScenicSpot">
+        select * from tour.scenic_spot
+         <where>
+
+             <if test="condition != null and condition!='' ">
+
+                 and scene_rollcall=#{condition} or province_id= (select id from tour.province
+                                                                         where province_name=#{condition})
+             </if>
+
+         </where>
+
+    </select>
+
+</mapper>

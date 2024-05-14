@@ -7,6 +7,10 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 mybatis:
+  mapper-locations: classpath*:/mapper/*.xml
   type-aliases-package: com.example.tour.entity
   configuration:
+    #日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #开启驼峰命名
     map-underscore-to-camel-case: true
