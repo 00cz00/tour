@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tour.mapper.ArticleMapper">
+
+    <select id="page" resultType="com.example.tour.entity.Article">
+        select * from tour.article
+        <where>
+            <if test="condition!=null and condition!='' ">
+                and title like concat('%',#{condition},'%') or province_id= (select id from tour.province
+                                                                          where province_name=#{condition})
+                                                                             or scenic_spot_id=(select id from tour.scenic_sopt
+                                                                                    where scene_rollcall=#{condition})
+            </if>
+        </where>
+    </select>
+</mapper>

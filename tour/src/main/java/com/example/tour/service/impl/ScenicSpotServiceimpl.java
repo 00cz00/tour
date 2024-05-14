@@ -23,11 +23,11 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
             PageHelper.startPage(scenicSpotPageQueryDTO.getPage(),scenicSpotPageQueryDTO.getPageSize());
             Page<ScenicSpot> page= scenicSpotMapper.page(scenicSpotPageQueryDTO);
 
-            //判断是最热还是最新
-            if(scenicSpotPageQueryDTO.getSearchBy().equals("最热")){
-                ScenicSpot temper;
+            List<ScenicSpot> scenicSpotList=page.getResult();
 
-                List<ScenicSpot> scenicSpotList=page.getResult();
+            //判断是最热还是最新
+            if(scenicSpotPageQueryDTO.getSearchBy().equals("hot")){
+                ScenicSpot temper;
 
                 for (int i=0;i<scenicSpotList.size()-1;i++){
                     for (int j=i+1;j<scenicSpotList.size();j++){
@@ -40,12 +40,8 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
                         }
                     }
                 }
-
-                return new PageResult(page.getTotal(), scenicSpotList);
             }
-            else {
-                return new PageResult(page.getTotal(),page.getResult());
-            }
+        return new PageResult(page.getTotal(), scenicSpotList);
         }
 
 
