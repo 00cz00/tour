@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -92,5 +93,22 @@ public class UserController {
         userService.followee(userId,id);
         return Result.success("关注成功");
     }
+
+
+
+
+    //查询用户关注的用户
+    @GetMapping("/selectFollowee")
+    public Result<List<User>> selectFollowee(ServletRequest servletRequest){
+        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+        Claims claims = JwtUtils.parserJwt(jwt);
+        String userId = (String) claims.get("id");
+       List<User> userList= userService.selectFollowee(userId);
+        return Result.success(userList);
+    }
+
+
+    //取关用户
 
 }

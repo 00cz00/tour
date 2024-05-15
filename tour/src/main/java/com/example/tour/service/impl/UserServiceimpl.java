@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -38,5 +39,10 @@ public class UserServiceimpl implements UserService {
     @Override
     public void followee(String userId,String id) {
         followeeMapper.followee(userId,id);
+    }
+
+    @Override
+    public List<User> selectFollowee(String userId) {
+       return followeeMapper.selectFollowee(userId);
     }
 }
