@@ -3,6 +3,7 @@ package com.example.tour.service.impl;
 
 import com.example.tour.dto.ArticlePageQueryDTO;
 import com.example.tour.entity.Article;
+import com.example.tour.entity.Collections;
 import com.example.tour.entity.ScenicSpot;
 import com.example.tour.entity.User;
 import com.example.tour.mapper.*;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -35,7 +37,7 @@ public class ArticleServiceimpl implements ArticleService {
     private ProvinceMapper provinceMapper;
     //文章分页查询
     @Override
-    public List<ArticlePageQueryVO> page( ArticlePageQueryDTO articlePageQueryDTO) {
+    public List<ArticlePageQueryVO> page( ArticlePageQueryDTO articlePageQueryDTO,String userId) {
 
         int offset=(articlePageQueryDTO.getPage()-1)*articlePageQueryDTO.getPageSize();
         articlePageQueryDTO.setOffset(offset);
@@ -65,7 +67,11 @@ public class ArticleServiceimpl implements ArticleService {
             String provinceName=provinceMapper.getById(a.getProvinceId());
             articlePageQueryVO.setProvince(provinceName);
 
-
+            //根据登录用户id和文章id判断是否收藏该文章
+            Collections collection1=collectionMapper.isCollected(userId,a.getId());
+            if(collection1!=null){
+                articlePageQueryVO.setIsCollected(1);
+            }
             articlePageQueryVOList.add(articlePageQueryVO);
 
         }

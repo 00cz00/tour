@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ArticleService {
     //文章分页查询
-    List<ArticlePageQueryVO> page(ArticlePageQueryDTO articlePageQueryDTO);
+    List<ArticlePageQueryVO> page(ArticlePageQueryDTO articlePageQueryDTO,String userId);
 }
