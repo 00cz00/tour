@@ -16,4 +16,6 @@ public interface ArticleService {
     List<Article> selectMyArticle(String userId);
 
     void collectArticle(String userId, String id);
+
+    void comment(String articleId, String content, String userId);
 }

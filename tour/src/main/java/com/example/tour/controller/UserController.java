@@ -175,4 +175,18 @@ public class UserController {
         articleService.collectArticle(userId,id);
         return Result.success("关注文章成功");
     }
+
+
+
+
+    //评论文章
+    @PostMapping("/comment")
+    public Result comment(String articleId,String content,ServletRequest servletRequest){
+        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+        Claims claims = JwtUtils.parserJwt(jwt);
+        String userId = (String) claims.get("id");
+        articleService.comment(articleId,content,userId);
+        return  Result.success("评论成功");
+    }
 }

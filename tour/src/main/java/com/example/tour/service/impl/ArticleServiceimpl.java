@@ -111,6 +111,11 @@ public class ArticleServiceimpl implements ArticleService {
         collectionMapper.collectArticle(userId,id);
     }
 
+    @Override
+    public void comment(String articleId, String content, String userId) {
+        commentMapper.comment(articleId,content,userId);
+    }
+
     public void ThumbsUp(String id) {
         articleMapper.ThumbsUp(id);
     }
