@@ -19,4 +19,8 @@ public interface UserService  {
     void followee(String userId,String id);
 
     List<User> selectFollowee(String userId);
+
+    void deleteFollowee(String id,String userId);
+
+    void deleteUser(String id);
 }

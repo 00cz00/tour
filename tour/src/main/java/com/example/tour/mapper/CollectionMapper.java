@@ -1,6 +1,7 @@
 package com.example.tour.mapper;
 
 import com.example.tour.entity.Collections;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -14,4 +15,6 @@ public interface CollectionMapper {
      int countCollection(long id) ;
     @Select("select * from tour.collection where user_id=#{userId} and article_id=#{id}")
     Collections isCollected(String userId, long id);
+    @Delete("delete from collection where article_id=#{id}")
+    void articleDelete(String id);
 }

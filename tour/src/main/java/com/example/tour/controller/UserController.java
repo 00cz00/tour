@@ -2,8 +2,10 @@ package com.example.tour.controller;
 
 import com.example.tour.dto.UserLoginDTO;
 import com.example.tour.dto.UserRegDTO;
+import com.example.tour.entity.Article;
 import com.example.tour.entity.User;
 import com.example.tour.result.Result;
+import com.example.tour.service.ArticleService;
 import com.example.tour.service.UserService;
 import com.example.tour.utils.JwtUtils;
 import com.example.tour.vo.UserLoginVO;
@@ -29,6 +31,8 @@ import java.util.Map;
 public class UserController {
     @Autowired
     UserService userService;
+    @Autowired
+    ArticleService articleService;
     //根据id查人
     @GetMapping("/userById")
     public User getUserById(String id){
@@ -110,5 +114,34 @@ public class UserController {
 
 
     //取关用户
+    @PostMapping("/deleteFollowee")
+    public Result deleteFollowee(ServletRequest servletRequest,String id){
+        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+        Claims claims = JwtUtils.parserJwt(jwt);
+        String userId = (String) claims.get("id");
+        userService.deleteFollowee(id,userId);
+        return Result.success("取关成功");
+    }
 
+
+    //用户删除
+    @PostMapping("/deleteUser")
+    public Result deleteUser(String id){
+        userService.deleteUser(id);
+        return Result.success("删除成功");
+    }
+
+
+
+    //查询用户关注的文章
+    @GetMapping("/selectCollection")
+    public Result<List<Article>> selectCollection(ServletRequest servletRequest){
+        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+        Claims claims = JwtUtils.parserJwt(jwt);
+        String userId = (String) claims.get("id");
+        List<Article> articleList=articleService.selectCollection(userId);
+        return Result.success(articleList);
+    }
 }

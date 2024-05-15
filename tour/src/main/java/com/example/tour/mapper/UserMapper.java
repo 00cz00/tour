@@ -3,6 +3,7 @@ package com.example.tour.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.tour.dto.UserLoginDTO;
 import com.example.tour.entity.User;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -18,5 +19,6 @@ public interface UserMapper {
     User login(String email,String password);
     @Insert("insert into user(email,password,username,create_time,url)values (#{email},#{password},#{username},#{now},#{url})")
     void reg(String email, String password, String username, LocalDateTime now,String url);
-
+    @Delete("delete from user where id=#{id}")
+    void deleteUser(String id);
 }

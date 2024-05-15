@@ -94,4 +94,19 @@ public class ArticleServiceimpl implements ArticleService {
 
         return articlePageQueryVOList;
     }
+
+    @Override
+    public List<Article> selectCollection(String userId) {
+
+        return articleMapper.selectCollection(userId);
+    }
+
+    public void ThumbsUp(String id) {
+        articleMapper.ThumbsUp(id);
+    }
+
+    public void delete(String id) {
+        articleMapper.delete(id);
+        collectionMapper.articleDelete(id);
+    }
 }

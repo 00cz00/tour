@@ -1,6 +1,7 @@
 package com.example.tour.controller;
 
 import com.example.tour.dto.ArticlePageQueryDTO;
+import com.example.tour.entity.Article;
 import com.example.tour.result.Result;
 import com.example.tour.service.impl.ArticleServiceimpl;
 import com.example.tour.utils.JwtUtils;
@@ -23,23 +24,40 @@ public class ArticleController {
 
     //文章分页查询
     @PostMapping("/page")
-    public Result<List<ArticlePageQueryVO>> page(@RequestBody ArticlePageQueryDTO articlePageQueryDTO, ServletRequest servletRequest){
-        log.info("要查询的文章信息：{}",articlePageQueryDTO);
-        String userId="null";
+    public Result<List<ArticlePageQueryVO>> page(@RequestBody ArticlePageQueryDTO articlePageQueryDTO, ServletRequest servletRequest) {
+        log.info("要查询的文章信息：{}", articlePageQueryDTO);
+        String userId = "null";
 
-        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        HttpServletRequest req = (HttpServletRequest) servletRequest;
         String jwt = req.getHeader("jwt");
-        log.info("jwt撒大大:"+jwt);
+        log.info("jwt撒大大:" + jwt);
         if (jwt != null) {
             Claims claims = JwtUtils.parserJwt(jwt);
-             userId = (String) claims.get("id");
+            userId = (String) claims.get("id");
         }
 
 
-        List<ArticlePageQueryVO> articlePageQueryVOList=articleServiceimpl.page(articlePageQueryDTO,userId);
+        List<ArticlePageQueryVO> articlePageQueryVOList = articleServiceimpl.page(articlePageQueryDTO, userId);
 
         return Result.success(articlePageQueryVOList);
 
+    }
+
+
+    //文章点赞
+    @PostMapping("/ThumbsUp")
+    public Result ThumbsUp(String id) {
+        articleServiceimpl.ThumbsUp(id);
+        return Result.success("点赞成功");
+    }
+
+
+
+    //删除文章
+    @PostMapping("/delete")
+    public Result delete(String id){
+        articleServiceimpl.delete(id);
+        return Result.success("删除成功");
     }
 
 }

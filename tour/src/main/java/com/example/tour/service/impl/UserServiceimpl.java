@@ -45,4 +45,15 @@ public class UserServiceimpl implements UserService {
     public List<User> selectFollowee(String userId) {
        return followeeMapper.selectFollowee(userId);
     }
+
+    @Override
+    public void deleteFollowee(String id,String userId) {
+        followeeMapper.deleteFollowee(id,userId);
+    }
+
+    @Override
+    public void deleteUser(String id) {
+        userMapper.deleteUser(id);
+        followeeMapper.deleteUser(id);
+    }
 }
