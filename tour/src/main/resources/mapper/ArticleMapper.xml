@@ -9,9 +9,15 @@
             <if test="condition!=null and condition!='' ">
                 and title like concat('%',#{condition},'%') or province_id= (select id from tour.province
                                                                           where province_name=#{condition})
-                                                                             or scenic_spot_id=(select id from tour.scenic_sopt
+                                                                             or scenic_spot_id=(select id from tour.scenic_spot
                                                                                     where scene_rollcall=#{condition})
             </if>
         </where>
+
+        <if test="searchBy=='hot'">
+          order by likes desc
+        </if>
+         limit #{offset},#{pageSize}
     </select>
+
 </mapper>

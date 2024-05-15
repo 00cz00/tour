@@ -1,15 +1,14 @@
 package com.example.tour.controller;
 
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
-import com.example.tour.result.PageResult;
+import com.example.tour.entity.ScenicSpot;
 import com.example.tour.result.Result;
 import com.example.tour.service.impl.ScenicSpotServiceimpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -18,14 +17,15 @@ public class ScenicSpotController {
     @Autowired
     private ScenicSpotServiceimpl scenicSpotServiceimpl;
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     //景点分页查询
-    public Result<PageResult> Page(@RequestBody ScenicSpotPageQueryDTO scenicSpotPageQueryDTO){
+    public Result<List<ScenicSpot>> Page(@RequestBody ScenicSpotPageQueryDTO scenicSpotPageQueryDTO){
         log.info("查询的景点：{}",scenicSpotPageQueryDTO);
-        PageResult pageResult=scenicSpotServiceimpl.page(scenicSpotPageQueryDTO);
+
+        List<ScenicSpot> scenicSpotList=scenicSpotServiceimpl.page(scenicSpotPageQueryDTO);
 
 
-        return Result.success(pageResult);
+        return Result.success(scenicSpotList);
     }
 
 

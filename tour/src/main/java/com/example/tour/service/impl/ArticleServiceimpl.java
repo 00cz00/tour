@@ -6,7 +6,7 @@ import com.example.tour.entity.Article;
 import com.example.tour.entity.ScenicSpot;
 import com.example.tour.entity.User;
 import com.example.tour.mapper.*;
-import com.example.tour.result.PageResult;
+
 import com.example.tour.service.ArticleService;
 import com.example.tour.vo.ArticlePageQueryVO;
 import com.github.pagehelper.Page;
@@ -35,13 +35,16 @@ public class ArticleServiceimpl implements ArticleService {
     private ProvinceMapper provinceMapper;
     //文章分页查询
     @Override
-    public PageResult page( ArticlePageQueryDTO articlePageQueryDTO) {
-        PageHelper.startPage(articlePageQueryDTO.getPage(),articlePageQueryDTO.getPageSize());
-        Page<Article> page=articleMapper.page(articlePageQueryDTO);
+    public List<ArticlePageQueryVO> page( ArticlePageQueryDTO articlePageQueryDTO) {
+
+        int offset=(articlePageQueryDTO.getPage()-1)*articlePageQueryDTO.getPageSize();
+        articlePageQueryDTO.setOffset(offset);
+
+        List<Article> list=articleMapper.page(articlePageQueryDTO);
 
         List<ArticlePageQueryVO> articlePageQueryVOList=new ArrayList<>();
 
-        for (Article a:page.getResult()){
+        for (Article a:list){
             ArticlePageQueryVO articlePageQueryVO=new ArticlePageQueryVO();
             BeanUtils.copyProperties(a,articlePageQueryVO);
 
@@ -67,7 +70,7 @@ public class ArticleServiceimpl implements ArticleService {
 
         }
 
-        //判断是最热还是最新
+       /* //判断是最热还是最新
         if(articlePageQueryDTO.getSearchBy().equals("hot")){
              ArticlePageQueryVO temper;
 
@@ -81,8 +84,8 @@ public class ArticleServiceimpl implements ArticleService {
                     }
                 }
             }
-        }
+        }*/
 
-        return new PageResult(page.getTotal(),articlePageQueryVOList);
+        return articlePageQueryVOList;
     }
 }

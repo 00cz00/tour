@@ -6,15 +6,17 @@
     <select id="page" resultType="com.example.tour.entity.ScenicSpot">
         select * from tour.scenic_spot
          <where>
-
              <if test="condition != null and condition!='' ">
 
                  and scene_rollcall=#{condition} or province_id= (select id from tour.province
                                                                          where province_name=#{condition})
+
              </if>
-
          </where>
-
+             <if test="searchBy=='hot'">
+               order by likes desc
+             </if>
+                   limit #{offset},#{pageSize}
     </select>
 
 </mapper>

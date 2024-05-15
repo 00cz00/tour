@@ -16,5 +16,5 @@ public class ScenicSpot {
     //所属省份id
     private int provinceId;
     //点赞数
-    private int like;
+    private int likes;
 }

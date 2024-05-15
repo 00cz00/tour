@@ -3,7 +3,6 @@ package com.example.tour.service.impl;
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
 import com.example.tour.entity.ScenicSpot;
 import com.example.tour.mapper.ScenicSpotMapper;
-import com.example.tour.result.PageResult;
 import com.example.tour.service.ScenicSpotService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -18,14 +17,17 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
     private ScenicSpotMapper scenicSpotMapper;
 
     @Override
-    public PageResult page(ScenicSpotPageQueryDTO scenicSpotPageQueryDTO) {
+    public List<ScenicSpot> page(ScenicSpotPageQueryDTO scenicSpotPageQueryDTO) {
 
-            PageHelper.startPage(scenicSpotPageQueryDTO.getPage(),scenicSpotPageQueryDTO.getPageSize());
-            Page<ScenicSpot> page= scenicSpotMapper.page(scenicSpotPageQueryDTO);
+        int offset=(scenicSpotPageQueryDTO.getPage()-1)*scenicSpotPageQueryDTO.getPageSize();
+        scenicSpotPageQueryDTO.setOffset(offset);
 
-            List<ScenicSpot> scenicSpotList=page.getResult();
+            //PageHelper.startPage(scenicSpotPageQueryDTO.getPage(),scenicSpotPageQueryDTO.getPageSize());
+        List<ScenicSpot> scenicSpotList= scenicSpotMapper.page(scenicSpotPageQueryDTO);
 
-            //判断是最热还是最新
+            //List<ScenicSpot> scenicSpotList=page.getResult();
+
+           /* //判断是最热还是最新
             if(scenicSpotPageQueryDTO.getSearchBy().equals("hot")){
                 ScenicSpot temper;
 
@@ -40,8 +42,8 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
                         }
                     }
                 }
-            }
-        return new PageResult(page.getTotal(), scenicSpotList);
+            }*/
+        return scenicSpotList;
         }
 
 

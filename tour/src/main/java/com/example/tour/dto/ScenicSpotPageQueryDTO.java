@@ -11,6 +11,9 @@ public class ScenicSpotPageQueryDTO {
 
     //每页记录数
     private int pageSize;
+    //
+
+    private int offset;
 
     //查询条件
     private String condition;

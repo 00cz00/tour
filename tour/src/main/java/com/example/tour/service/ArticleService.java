@@ -1,9 +1,11 @@
 package com.example.tour.service;
 
 import com.example.tour.dto.ArticlePageQueryDTO;
-import com.example.tour.result.PageResult;
+import com.example.tour.vo.ArticlePageQueryVO;
+
+import java.util.List;
 
 public interface ArticleService {
     //文章分页查询
-    PageResult page(ArticlePageQueryDTO articlePageQueryDTO);
+    List<ArticlePageQueryVO> page(ArticlePageQueryDTO articlePageQueryDTO);
 }
