@@ -22,4 +22,6 @@ public interface ArticleMapper {
     void ThumbsUp(String id);
     @Delete("delete from article where id=#{id}")
     void delete(String id);
+    @Select("select * from article where user_id=#{userId}")
+    List<Article> selectMyArticle(String userId);
 }

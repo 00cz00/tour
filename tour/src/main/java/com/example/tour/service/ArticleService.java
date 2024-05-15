@@ -11,4 +11,9 @@ public interface ArticleService {
     List<ArticlePageQueryVO> page(ArticlePageQueryDTO articlePageQueryDTO,String userId);
 
     List<Article> selectCollection(String userId);
+
+
+    List<Article> selectMyArticle(String userId);
+
+    void collectArticle(String userId, String id);
 }

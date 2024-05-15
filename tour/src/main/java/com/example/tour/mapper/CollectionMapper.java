@@ -2,6 +2,7 @@ package com.example.tour.mapper;
 
 import com.example.tour.entity.Collections;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -17,4 +18,6 @@ public interface CollectionMapper {
     Collections isCollected(String userId, long id);
     @Delete("delete from collection where article_id=#{id}")
     void articleDelete(String id);
+    @Insert("insert into collection(user_id,article_id) values (#{userId},#{id})")
+    void collectArticle(String userId, String id);
 }

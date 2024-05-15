@@ -144,4 +144,35 @@ public class UserController {
         List<Article> articleList=articleService.selectCollection(userId);
         return Result.success(articleList);
     }
+
+    //查询我发布的文章
+    @GetMapping("/selectMyArticle")
+    public Result<List<Article>> selectMyArticle(ServletRequest servletRequest){
+        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+        Claims claims = JwtUtils.parserJwt(jwt);
+        String userId = (String) claims.get("id");
+        List<Article> articleList=articleService.selectMyArticle(userId);
+        return  Result.success(articleList);
+    }
+
+
+
+
+
+
+
+
+
+
+    //关注文章
+    @PostMapping("/collectArticle")
+    public Result collectArticle(ServletRequest servletRequest,String id){
+        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+        Claims claims = JwtUtils.parserJwt(jwt);
+        String userId = (String) claims.get("id");
+        articleService.collectArticle(userId,id);
+        return Result.success("关注文章成功");
+    }
 }

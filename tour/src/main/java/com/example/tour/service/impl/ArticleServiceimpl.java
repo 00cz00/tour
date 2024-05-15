@@ -101,6 +101,16 @@ public class ArticleServiceimpl implements ArticleService {
         return articleMapper.selectCollection(userId);
     }
 
+    @Override
+    public List<Article> selectMyArticle(String userId) {
+        return articleMapper.selectMyArticle(userId);
+    }
+
+    @Override
+    public void collectArticle(String userId, String id) {
+        collectionMapper.collectArticle(userId,id);
+    }
+
     public void ThumbsUp(String id) {
         articleMapper.ThumbsUp(id);
     }
