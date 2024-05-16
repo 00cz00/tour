@@ -1,5 +1,6 @@
 package com.example.tour.filter;
 
+import com.example.tour.result.Result;
 import com.example.tour.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
@@ -10,10 +11,8 @@ import org.springframework.http.HttpRequest;
 import org.springframework.util.StringUtils;
 
 import javax.naming.spi.DirStateFactory;
-import javax.xml.transform.Result;
 import java.io.IOException;
 import java.security.URIParameter;
-
 //@WebFilter(urlPatterns = "/*")
 public class jwtFilter implements Filter {
     @Override
@@ -24,7 +23,7 @@ public class jwtFilter implements Filter {
         System.out.println(url);
 
 
-        if(url.contains("/login")||url.contains("/reg")){
+        if(url.contains("/login")||url.contains("/reg")||url.contains("/article/page")){
             filterChain.doFilter(servletRequest,servletResponse);
             return;
         }
@@ -34,7 +33,7 @@ public class jwtFilter implements Filter {
            String notLogin="未登录";
            System.out.println(notLogin);
            ((HttpServletResponse) servletResponse).sendError(401);
-            return;
+            return ;
         }
         try {
             Claims claims = JwtUtils.parserJwt(jwt);

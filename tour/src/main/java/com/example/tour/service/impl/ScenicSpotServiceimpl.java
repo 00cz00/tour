@@ -2,6 +2,8 @@ package com.example.tour.service.impl;
 
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
 import com.example.tour.entity.ScenicSpot;
+import com.example.tour.entity.ScenicSpotPic;
+import com.example.tour.mapper.SceneSpotPicMapper;
 import com.example.tour.mapper.ScenicSpotMapper;
 import com.example.tour.service.ScenicSpotService;
 import com.github.pagehelper.Page;
@@ -15,6 +17,8 @@ import java.util.List;
 public class ScenicSpotServiceimpl implements ScenicSpotService {
     @Autowired
     private ScenicSpotMapper scenicSpotMapper;
+    @Autowired
+    private SceneSpotPicMapper sceneSpotPicMapper;
 
     @Override
     public List<ScenicSpot> page(ScenicSpotPageQueryDTO scenicSpotPageQueryDTO) {
@@ -45,6 +49,14 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
             }*/
         return scenicSpotList;
         }
+    //根据景点id查询详情
+    @Override
+    public List<ScenicSpotPic> getDetial(String id) {
+        List<ScenicSpotPic> scenicSpotPicList=sceneSpotPicMapper.getBySceneSpotId(id);
+
+        return scenicSpotPicList;
+
+    }
 
 
 }

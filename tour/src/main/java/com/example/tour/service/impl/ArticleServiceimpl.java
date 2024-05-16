@@ -2,14 +2,13 @@ package com.example.tour.service.impl;
 
 
 import com.example.tour.dto.ArticlePageQueryDTO;
-import com.example.tour.entity.Article;
-import com.example.tour.entity.Collections;
-import com.example.tour.entity.ScenicSpot;
-import com.example.tour.entity.User;
+import com.example.tour.entity.*;
 import com.example.tour.mapper.*;
 
 import com.example.tour.service.ArticleService;
+import com.example.tour.vo.ArticleDetialVO;
 import com.example.tour.vo.ArticlePageQueryVO;
+import com.example.tour.vo.CommentDetialVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.java.Log;
@@ -114,6 +113,53 @@ public class ArticleServiceimpl implements ArticleService {
     @Override
     public void comment(String articleId, String content, String userId) {
         commentMapper.comment(articleId,content,userId);
+    }
+
+    //根据文章id查询具体内容
+    @Override
+    public ArticleDetialVO getById(String id,String userId) {
+        Article article=articleMapper.getBy(id);
+        ArticleDetialVO articleDetialVO=new ArticleDetialVO();
+
+        BeanUtils.copyProperties(article,articleDetialVO);
+
+        //根据userId查询作者信息
+        User user= userMapper.getById(article.getUserId());
+        user.setPassword("****");
+        articleDetialVO.setUser(user);
+
+        //根据文章id查询其收藏数
+        int collection= collectionMapper.countCollection(article.getId());
+        articleDetialVO.setCollection(collection);
+
+        //根据文章id查询其评论数
+        int comment = commentMapper.countComment(article.getId());
+        articleDetialVO.setComment(comment);
+
+        //根据省份id查出其名称
+        String provinceName=provinceMapper.getById(article.getProvinceId());
+        articleDetialVO.setProvince(provinceName);
+
+        //根据登录用户id和文章id判断是否收藏该文章
+        Collections collection1=collectionMapper.isCollected(userId,article.getId());
+        if(collection1!=null){
+            articleDetialVO.setIsCollected(1);
+        }
+
+        //根据文章id查出其全部评论
+        List<Comment> commentList=commentMapper.getByArticleId(id);
+        List<CommentDetialVO> commentDetialVOS=new ArrayList<>();
+        for(Comment comment1: commentList){
+            User user1=userMapper.getById(comment1.getUserId());
+            CommentDetialVO commentDetialVO=new CommentDetialVO();
+            BeanUtils.copyProperties(comment1,commentDetialVO);
+            commentDetialVO.setUser(user1);
+            commentDetialVOS.add(commentDetialVO);
+        }
+        articleDetialVO.setCommentContent(commentDetialVOS);
+
+
+        return articleDetialVO;
     }
 
     public void ThumbsUp(String id) {

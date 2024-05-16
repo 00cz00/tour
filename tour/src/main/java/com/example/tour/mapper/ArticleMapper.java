@@ -24,4 +24,7 @@ public interface ArticleMapper {
     void delete(String id);
     @Select("select * from article where user_id=#{userId}")
     List<Article> selectMyArticle(String userId);
+
+    @Select("select * from tour.article where id=#{id}")
+    Article getBy(String id);
 }

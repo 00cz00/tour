@@ -5,6 +5,7 @@ import com.example.tour.entity.Article;
 import com.example.tour.result.Result;
 import com.example.tour.service.impl.ArticleServiceimpl;
 import com.example.tour.utils.JwtUtils;
+import com.example.tour.vo.ArticleDetialVO;
 import com.example.tour.vo.ArticlePageQueryVO;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletRequest;
@@ -31,12 +32,19 @@ public class ArticleController {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         String jwt = req.getHeader("jwt");
         log.info("jwt撒大大:" + jwt);
-        if (jwt != null) {
-            Claims claims = JwtUtils.parserJwt(jwt);
-            userId = (String) claims.get("id");
+        if (jwt != null && !jwt.equals("")) {
+            try {
+                Claims claims = JwtUtils.parserJwt(jwt);
+                userId = (String) claims.get("id");
+
+            }catch  (Exception e){
+
+            }
+
         }
 
 
+        log.info("啊哒哒哒userid={}",userId);
         List<ArticlePageQueryVO> articlePageQueryVOList = articleServiceimpl.page(articlePageQueryDTO, userId);
 
         return Result.success(articlePageQueryVOList);
@@ -60,8 +68,23 @@ public class ArticleController {
         return Result.success("删除成功");
     }
 
+    //根据文章id查询文章详细内容
+    @PostMapping("/detial")
+    public Result<ArticleDetialVO> getArticleDetial(String id,ServletRequest servletRequest){
+        log.info("查询的文章id："+id);
+
+        String userId = "null";
+
+        HttpServletRequest req = (HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+        log.info("jwt撒大大:" + jwt);
+        if (jwt != null && !jwt.equals("")) {
+            Claims claims = JwtUtils.parserJwt(jwt);
+            userId = (String) claims.get("id");
+        }
 
 
-
-
+        ArticleDetialVO articleDetialVO=articleServiceimpl.getById(id,userId);
+        return Result.success(articleDetialVO);
+    }
 }

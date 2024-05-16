@@ -13,6 +13,7 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -188,5 +189,19 @@ public class UserController {
         String userId = (String) claims.get("id");
         articleService.comment(articleId,content,userId);
         return  Result.success("评论成功");
+    }
+
+    //检测用户是否登录
+    @GetMapping("/user/userInfo")
+    public Result<User>  isLogin(ServletRequest servletRequest){
+        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+
+        Claims claims = JwtUtils.parserJwt(jwt);
+
+        String userId = (String) claims.get("id");
+        val userById = userService.getUserById(userId);
+        return Result.success(userById);
+
     }
 }
