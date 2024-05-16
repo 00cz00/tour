@@ -7,6 +7,7 @@ import com.example.tour.entity.User;
 import com.example.tour.result.Result;
 import com.example.tour.service.ArticleService;
 import com.example.tour.service.UserService;
+import com.example.tour.utils.AliYunOssUtils;
 import com.example.tour.utils.JwtUtils;
 import com.example.tour.vo.UserLoginVO;
 import io.jsonwebtoken.Claims;
@@ -16,11 +17,10 @@ import lombok.Data;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,6 +34,7 @@ public class UserController {
     UserService userService;
     @Autowired
     ArticleService articleService;
+
     //根据id查人
     @GetMapping("/userById")
     public User getUserById(String id){
@@ -203,5 +204,35 @@ public class UserController {
         val userById = userService.getUserById(userId);
         return Result.success(userById);
 
+    }
+
+
+
+    //上传图片到oss并返回url
+    @PostMapping(value="/uploadImgToOSS")
+    public String uploadImageToOSS(@RequestParam("imageFile") MultipartFile multipartFile) {
+        String imageUrl = null;
+        try {
+            // 获取文件名
+            String originalFilename = multipartFile.getOriginalFilename();
+            // 获取文件字节数组
+            byte[] bytes = multipartFile.getBytes();
+            // 构造OSS Object Name，可以使用文件名或者自定义的名称
+            String objectName = originalFilename;
+
+            // 使用工具类上传图片
+            imageUrl = AliYunOssUtils.upload(bytes, objectName);
+
+            // 打印图片的URL
+            System.out.println("Image uploaded URL: " + imageUrl);
+
+            // 这里可以根据需要将图片URL保存到数据库或进行其他处理
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error occurred while uploading the image.");
+        }
+        return imageUrl;
     }
 }

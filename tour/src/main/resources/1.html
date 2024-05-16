@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Image to OSS</title>
+</head>
+<body>
+
+<h2>Upload Image to OSS</h2>
+
+<!-- 图片上传表单 -->
+<form id="uploadForm" enctype="multipart/form-data" method="post">
+    <input type="file" name="imageFile" accept="image/*" required>
+    <button type="submit">Upload Image</button>
+</form>
+
+<!-- 图片预览区域 -->
+<div id="imagePreview"></div>
+
+<script>
+    // 获取表单元素
+    var form = document.getElementById('uploadForm');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        var formData = new FormData(form);
+        // 注意这里的URL与你的Spring Controller中定义的URL一致
+        fetch('http://localhost:8080/uploadImgToOSS', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                // 处理返回的数据
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
+</script>
+
+</body>
+</html>

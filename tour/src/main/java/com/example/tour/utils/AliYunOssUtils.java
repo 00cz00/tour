@@ -10,7 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
-
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 @Slf4j
@@ -56,12 +57,18 @@ public class AliYunOssUtils {
 
         //文件访问路径规则 https://BucketName.Endpoint/ObjectName
         StringBuilder stringBuilder = new StringBuilder("https://");
+        String encode;
+        try {
+            encode = URLEncoder.encode(objectName, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("url解码失败");
+        }
         stringBuilder
                 .append(bucketName)
                 .append(".")
-                .append(endpoint)
+                .append("oss-cn-hangzhou.aliyuncs.com")
                 .append("/")
-                .append(objectName);
+                .append(encode);
 
         log.info("文件上传到:{}", stringBuilder.toString());
 
