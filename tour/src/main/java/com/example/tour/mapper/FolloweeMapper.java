@@ -1,5 +1,6 @@
 package com.example.tour.mapper;
 
+import com.example.tour.entity.Followee;
 import com.example.tour.entity.User;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -18,4 +19,7 @@ public interface FolloweeMapper {
     void deleteFollowee(String id,String userId);
     @Delete("delete from followee where followee_id=#{id}")
     void deleteUser(String id);
+
+    @Select("select * from tour.followee where user_id=#{userId} and followee_id=#{followeeId}")
+    Followee isFollowed(String userId, String followeeId);
 }

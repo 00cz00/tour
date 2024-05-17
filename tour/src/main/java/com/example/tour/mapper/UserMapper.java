@@ -21,4 +21,7 @@ public interface UserMapper {
     void reg(String email, String password, String username, LocalDateTime now,String url);
     @Delete("delete from user where id=#{id}")
     void deleteUser(String id);
+
+    @Select("select * from tour.user where email=#{email}")
+    User getByEmail(String email);
 }

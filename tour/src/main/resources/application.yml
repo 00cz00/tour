@@ -6,6 +6,13 @@ spring:
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  servlet:
+    multipart:
+     #单个文件
+      max-file-size: 2MB
+      #单次请求
+      max-request-size: 100MB
 mybatis:
   mapper-locations: classpath*:/mapper/*.xml
   type-aliases-package: com.example.tour.entity
@@ -14,3 +21,10 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     #开启驼峰命名
     map-underscore-to-camel-case: true
+
+email:
+  user: 3583215615@qq.com
+  #授权码
+  code: kolwhakxczecdbbj
+  host: smtp.qq.com
+  auth: true

@@ -22,4 +22,8 @@ public interface ArticleService {
 
     //根据id查询文章具体内容
     ArticleDetialVO getById(String id,String userId);
+
+    void ThumbsUp(String id,String userId);
+
+    void delete(String id);
 }

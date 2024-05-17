@@ -22,6 +22,7 @@ public class ArticleDetialVO {
     private int likes;        //点赞数
     private int collection; //收藏数
     private int comment;    //评论数
+    private int isLiked;      //是否点赞该文章
     private int isCollected; //是否收藏该文章
     private int isFollowed; //收藏关注该文章作者
     private List commentContent;  //评论详细内容

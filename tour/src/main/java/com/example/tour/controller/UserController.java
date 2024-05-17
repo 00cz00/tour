@@ -14,6 +14,7 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -27,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
 @RestController
 public class UserController {
     @Autowired
@@ -46,8 +47,8 @@ public class UserController {
 
     //注册
     @PostMapping("/reg")
-    public Result<User> reg(@RequestBody UserRegDTO userRegDTO){
-        User user=userService.login(userRegDTO.getEmail(),userRegDTO.getPassword());
+    public Result reg(@RequestBody UserRegDTO userRegDTO){
+        User user=userService.getByEmail(userRegDTO.getEmail());
         if(user!=null){
             return Result.error("账号密码重复");
         }
@@ -56,10 +57,17 @@ public class UserController {
         }
 
         userService.reg(userRegDTO.getEmail(),userRegDTO.getPassword(),userRegDTO.getUsername(),userRegDTO.getUrl());
-        User usernow=userService.login(userRegDTO.getEmail(),userRegDTO.getPassword());
-        return Result.success(usernow);
+
+        //User usernow=userService.login(userRegDTO.getEmail(),userRegDTO.getPassword());
+        return Result.success();
     }
 
+    //发送验证码
+    @PostMapping("/send")
+    public Result send(@RequestBody Map<String,String> params) {
+        String email=params.get("email");
+        return userService.send(email);
+    }
 
 
 
@@ -161,13 +169,7 @@ public class UserController {
 
 
 
-
-
-
-
-
-
-    //关注文章
+    //收藏文章
     @PostMapping("/collectArticle")
     public Result collectArticle(ServletRequest servletRequest,String id){
         HttpServletRequest req=(HttpServletRequest) servletRequest;
@@ -175,7 +177,7 @@ public class UserController {
         Claims claims = JwtUtils.parserJwt(jwt);
         String userId = (String) claims.get("id");
         articleService.collectArticle(userId,id);
-        return Result.success("关注文章成功");
+        return Result.success("收藏文章成功");
     }
 
 
@@ -194,17 +196,31 @@ public class UserController {
 
     //检测用户是否登录
     @GetMapping("/user/userInfo")
-    public Result<User>  isLogin(ServletRequest servletRequest){
-        HttpServletRequest req=(HttpServletRequest) servletRequest;
+    public Result<User>  isLogin(ServletRequest servletRequest) {
+
+        HttpServletRequest req = (HttpServletRequest) servletRequest;
+        String userId = "null";
+
         String jwt = req.getHeader("jwt");
 
-        Claims claims = JwtUtils.parserJwt(jwt);
+        log.info("jwt撒大大:" + jwt);
+        if (jwt != null && !jwt.equals("")) {
+            try {
+                Claims claims = JwtUtils.parserJwt(jwt);
+                userId = (String) claims.get("id");
+                val userById = userService.getUserById(userId);
+                return Result.success(userById);
 
-        String userId = (String) claims.get("id");
-        val userById = userService.getUserById(userId);
-        return Result.success(userById);
+            } catch (Exception e) {
+                return Result.error("登录已过期");
+
+            }
+
+        }
+        return Result.error("未登录");
 
     }
+
 
 
 

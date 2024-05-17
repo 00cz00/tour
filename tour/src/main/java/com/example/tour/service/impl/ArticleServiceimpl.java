@@ -31,9 +31,13 @@ public class ArticleServiceimpl implements ArticleService {
     @Autowired
     private  CollectionMapper collectionMapper;
     @Autowired
+    private ArticleLikeMapper articleLikeMapper;
+    @Autowired
     private CommentMapper commentMapper;
     @Autowired
     private ProvinceMapper provinceMapper;
+    @Autowired
+    private FolloweeMapper followeeMapper;
     //文章分页查询
     @Override
     public List<ArticlePageQueryVO> page( ArticlePageQueryDTO articlePageQueryDTO,String userId) {
@@ -70,6 +74,12 @@ public class ArticleServiceimpl implements ArticleService {
             Collections collection1=collectionMapper.isCollected(userId,a.getId());
             if(collection1!=null){
                 articlePageQueryVO.setIsCollected(1);
+            }
+
+            //根据登录用户id和文章id判断是否点赞该文章
+            articleLike articleLike=articleLikeMapper.isLike(userId,a.getId());
+            if (articleLike!=null){
+                articlePageQueryVO.setIsLiked(1);
             }
             articlePageQueryVOList.add(articlePageQueryVO);
 
@@ -146,6 +156,18 @@ public class ArticleServiceimpl implements ArticleService {
             articleDetialVO.setIsCollected(1);
         }
 
+        //根据登录用户id和文章id判断是否点赞该文章
+        articleLike articleLike= articleLikeMapper.isLike(userId,article.getId());
+        if(articleLike!=null){
+            articleDetialVO.setIsLiked(1);
+        }
+        //根据用户id和文章作者id判断是否关注该作者
+        Followee followee=followeeMapper.isFollowed(userId,article.getUserId());
+        if (followee!=null)
+        {
+            articleDetialVO.setIsFollowed(1);
+        }
+
         //根据文章id查出其全部评论
         List<Comment> commentList=commentMapper.getByArticleId(id);
         List<CommentDetialVO> commentDetialVOS=new ArrayList<>();
@@ -156,14 +178,16 @@ public class ArticleServiceimpl implements ArticleService {
             commentDetialVO.setUser(user1);
             commentDetialVOS.add(commentDetialVO);
         }
+
         articleDetialVO.setCommentContent(commentDetialVOS);
 
 
         return articleDetialVO;
     }
 
-    public void ThumbsUp(String id) {
+    public void ThumbsUp(String id,String userId) {
         articleMapper.ThumbsUp(id);
+        articleLikeMapper.insert(id,userId);
     }
 
     public void delete(String id) {

@@ -3,6 +3,7 @@ package com.example.tour.service.impl;
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
 import com.example.tour.entity.ScenicSpot;
 import com.example.tour.entity.ScenicSpotPic;
+import com.example.tour.mapper.SceneSpotLikeMapper;
 import com.example.tour.mapper.SceneSpotPicMapper;
 import com.example.tour.mapper.ScenicSpotMapper;
 import com.example.tour.service.ScenicSpotService;
@@ -19,6 +20,10 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
     private ScenicSpotMapper scenicSpotMapper;
     @Autowired
     private SceneSpotPicMapper sceneSpotPicMapper;
+    @Autowired
+    private SceneSpotLikeMapper sceneSpotLikeMapper;
+
+
 
     @Override
     public List<ScenicSpot> page(ScenicSpotPageQueryDTO scenicSpotPageQueryDTO) {
@@ -57,6 +62,26 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
         return scenicSpotPicList;
 
     }
+
+    //根据id删除景点
+    @Override
+    public void delete(String id) {
+        scenicSpotMapper.deleteById(id);
+        sceneSpotPicMapper.deleteBySceneSpotId(id);
+        sceneSpotLikeMapper.deleteBySceneSpotId(id);
+
+    }
+
+    //根据id点赞景点
+    @Override
+    public void like(String sceneSpotId, String userId) {
+        scenicSpotMapper.Like(sceneSpotId);
+        SceneSpotLikeMapper.insert(sceneSpotId,userId);
+
+
+    }
+
+
 
 
 }

@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
 import javax.naming.spi.DirStateFactory;
 import java.io.IOException;
 import java.security.URIParameter;
-//@WebFilter(urlPatterns = "/*")
+@WebFilter(urlPatterns = "/*")
 public class jwtFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -23,7 +23,8 @@ public class jwtFilter implements Filter {
         System.out.println(url);
 
 
-        if(url.contains("/login")||url.contains("/reg")||url.contains("/article/page")){
+        if(url.contains("/login")||url.contains("/reg")||url.contains("/article/page") ||  url.contains("/uploadImgToOSS")||url.contains("/user/userInfo")||
+        url.contains("/send")){
             filterChain.doFilter(servletRequest,servletResponse);
             return;
         }

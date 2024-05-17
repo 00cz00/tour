@@ -3,6 +3,7 @@ package com.example.tour.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.tour.dto.UserLoginDTO;
 import com.example.tour.entity.User;
+import com.example.tour.result.Result;
 
 import java.util.List;
 
@@ -23,4 +24,9 @@ public interface UserService  {
     void deleteFollowee(String id,String userId);
 
     void deleteUser(String id);
+
+     Result send(String email);
+
+
+    User getByEmail(String email);
 }
