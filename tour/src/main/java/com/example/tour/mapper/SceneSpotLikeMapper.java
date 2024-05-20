@@ -12,4 +12,7 @@ public interface SceneSpotLikeMapper {
     //根据景点id删除对应全部点赞数据
     @Delete("delete from tour.scene_spot_like where scene_spot_id=#{id}")
     public void deleteBySceneSpotId(String id) ;
+
+    @Delete("delete from tour.scene_spot_like where scene_spot_id=#{sceneSpotId} and user_id=#{userId}")
+    void deleteBySIdAndUId(String sceneSpotId, String userId);
 }

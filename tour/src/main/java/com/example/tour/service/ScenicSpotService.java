@@ -20,4 +20,7 @@ public interface ScenicSpotService {
 
     //根据id点赞景点
     void like(String sceneSpotId,String userId);
+
+    //根据id取消点赞
+    void abolishLike(String sceneSpotId, String userId);
 }

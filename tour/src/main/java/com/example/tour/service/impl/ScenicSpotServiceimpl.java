@@ -81,7 +81,11 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
 
     }
 
-
+    @Override
+    public void abolishLike(String sceneSpotId, String userId) {
+        scenicSpotMapper.abolishLike(sceneSpotId);
+        sceneSpotLikeMapper.deleteBySIdAndUId(sceneSpotId,userId);
+    }
 
 
 }

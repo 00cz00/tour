@@ -16,6 +16,9 @@ public interface ScenicSpotMapper {
      @Delete("delete from tour.scenic_spot where id=#{id}")
     void deleteById(String id);
 
-     @Update("update tour.scenic_spot set likes=#{likes+1} where id={sceneSpotId}")
+     @Update("update tour.scenic_spot set likes=#{likes+1} where id=#{sceneSpotId}")
     void Like(String sceneSpotId);
+
+    @Update("update tour.scenic_spot set likes=#{likes-1} where id=#{sceneSpotId}")
+    void abolishLike(String sceneSpotId);
 }

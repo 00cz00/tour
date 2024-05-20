@@ -63,7 +63,8 @@ public class ArticleController {
 
     //文章点赞
     @PostMapping("/ThumbsUp")
-    public Result ThumbsUp(String id,ServletRequest servletRequest) {
+    public Result ThumbsUp(@RequestParam String id,ServletRequest servletRequest) {
+        System.out.println("asdasdasdsa"+id);
         HttpServletRequest req=(HttpServletRequest) servletRequest;
         String jwt = req.getHeader("jwt");
         Claims claims = JwtUtils.parserJwt(jwt);

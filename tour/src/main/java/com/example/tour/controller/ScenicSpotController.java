@@ -58,10 +58,21 @@ public class ScenicSpotController {
         String jwt = req.getHeader("jwt");
         Claims claims = JwtUtils.parserJwt(jwt);
         String userId = (String) claims.get("id");
-          scenicSpotServiceimpl.like(sceneSpotId,userId);
+        scenicSpotServiceimpl.like(sceneSpotId,userId);
         return Result.success("点赞成功");
     }
 
-    //
+    //根据id取消景点点赞
+
+    @PostMapping("/abolishlike")
+    public Result abolishLike(String sceneSpotId,ServletRequest servletRequest ){
+        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+        Claims claims = JwtUtils.parserJwt(jwt);
+        String userId = (String) claims.get("id");
+        scenicSpotServiceimpl.abolishLike(sceneSpotId,userId);
+        return Result.success();
+    }
+
 
 }
