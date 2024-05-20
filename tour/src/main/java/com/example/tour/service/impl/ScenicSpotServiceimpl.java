@@ -76,7 +76,7 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
     @Override
     public void like(String sceneSpotId, String userId) {
         scenicSpotMapper.Like(sceneSpotId);
-        SceneSpotLikeMapper.insert(sceneSpotId,userId);
+        sceneSpotLikeMapper.insert(sceneSpotId,userId);
 
 
     }

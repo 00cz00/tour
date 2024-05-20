@@ -62,6 +62,6 @@ public class ScenicSpotController {
         return Result.success("点赞成功");
     }
 
-
+    //
 
 }
