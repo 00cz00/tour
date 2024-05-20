@@ -72,7 +72,16 @@ public class ArticleController {
         return Result.success("点赞成功");
     }
 
-
+    //文章取消点赞
+    @PostMapping("/disThumbsUp")
+    public Result disThumbsUp(String id,ServletRequest servletRequest) {
+        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+        Claims claims = JwtUtils.parserJwt(jwt);
+        String userId = (String) claims.get("id");
+        articleServiceimpl.disThumbsUp(id,userId);
+        return Result.success("取消点赞成功");
+    }
 
 
     //删除文章

@@ -194,4 +194,10 @@ public class ArticleServiceimpl implements ArticleService {
         articleMapper.delete(id);
         collectionMapper.articleDelete(id);
     }
+
+    @Override
+    public void disThumbsUp(String id, String userId) {
+        articleMapper.disThumbsUp(id);
+        articleLikeMapper.disThumbsUp(id,userId);
+    }
 }

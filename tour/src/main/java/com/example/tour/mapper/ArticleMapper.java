@@ -27,4 +27,6 @@ public interface ArticleMapper {
 
     @Select("select * from tour.article where id=#{id}")
     Article getBy(String id);
+    @Update("update article set likes=(likes-1) where id=#{id}")
+    void disThumbsUp(String id);
 }

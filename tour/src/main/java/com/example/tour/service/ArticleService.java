@@ -26,4 +26,6 @@ public interface ArticleService {
     void ThumbsUp(String id,String userId);
 
     void delete(String id);
+
+    void disThumbsUp(String id, String userId);
 }
