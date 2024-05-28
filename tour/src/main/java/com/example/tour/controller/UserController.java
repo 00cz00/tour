@@ -1,13 +1,12 @@
 package com.example.tour.controller;
 
 import com.example.tour.dto.*;
-import com.example.tour.entity.Article;
+import com.example.tour.entity.*;
 import com.example.tour.entity.Collections;
-import com.example.tour.entity.User;
-import com.example.tour.entity.articleLike;
 import com.example.tour.mapper.*;
 import com.example.tour.result.Result;
 import com.example.tour.service.ArticleService;
+import com.example.tour.service.BannerService;
 import com.example.tour.service.UserService;
 import com.example.tour.utils.AliYunOssUtils;
 import com.example.tour.utils.JwtUtils;
@@ -39,8 +38,7 @@ public class UserController {
    @Autowired
     UserMapper userMapper;
 
-    @Autowired
-    private ArticleMapper articleMapper;
+
     @Autowired
     private CollectionMapper collectionMapper;
     @Autowired
@@ -50,7 +48,7 @@ public class UserController {
     @Autowired
     private ProvinceMapper provinceMapper;
     @Autowired
-    private FolloweeMapper followeeMapper;
+    private BannerService bannerService;
     //根据id查人
     @GetMapping("/userById")
     public User getUserById(String id){
@@ -420,4 +418,12 @@ public class UserController {
         userService.userUpdatePassword(userId,userUpdatePasswordDTO.getNewPassword());
         return Result.success("修改成功");
     }
+
+    //查询轮播图
+    @GetMapping("/bannerlect")
+    public Result<List<Banner>> bannerSelect(){
+        List<Banner> list= bannerService.bannerSelect();
+        return Result.success(list);
+    }
+
 }
