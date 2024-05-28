@@ -3,9 +3,11 @@ package com.example.tour.controller;
 import com.example.tour.dto.UserLoginDTO;
 import com.example.tour.dto.UserRegDTO;
 import com.example.tour.entity.Article;
+import com.example.tour.entity.Banner;
 import com.example.tour.entity.User;
 import com.example.tour.result.Result;
 import com.example.tour.service.ArticleService;
+import com.example.tour.service.BannerService;
 import com.example.tour.service.UserService;
 import com.example.tour.utils.AliYunOssUtils;
 import com.example.tour.utils.JwtUtils;
@@ -35,7 +37,8 @@ public class UserController {
     UserService userService;
     @Autowired
     ArticleService articleService;
-
+    @Autowired
+    BannerService bannerService;
     //根据id查人
     @GetMapping("/userById")
     public User getUserById(String id){
@@ -250,5 +253,14 @@ public class UserController {
             System.out.println("Error occurred while uploading the image.");
         }
         return imageUrl;
+    }
+
+
+
+    //查询轮播图
+    @GetMapping("/banner/select")
+    public Result<List<Banner>> bannerSelect(){
+       List<Banner> list= bannerService.bannerSelect();
+        return Result.success(list);
     }
 }
