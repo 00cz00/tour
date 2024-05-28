@@ -5,7 +5,10 @@ import com.example.tour.entity.ScenicSpot;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
+import java.util.List;
 
 @Mapper
 public interface ScenicSpotMapper {
@@ -21,4 +24,7 @@ public interface ScenicSpotMapper {
 
     @Update("update tour.scenic_spot set likes=#{likes-1} where id=#{sceneSpotId}")
     void abolishLike(String sceneSpotId);
+
+    @Select("select * from tour.scenic_spot where province_id=#{id}")
+    List<ScenicSpot> getByPId(String id);
 }

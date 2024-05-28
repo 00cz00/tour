@@ -3,14 +3,14 @@ package com.example.tour.service;
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
 import com.example.tour.entity.ScenicSpot;
 import com.example.tour.entity.ScenicSpotPic;
-import org.apache.ibatis.annotations.Update;
+import com.example.tour.vo.ScenicSpotVO;
 
 
 import java.util.List;
 
 public interface ScenicSpotService {
     //景点分页查询
-    List<ScenicSpot> page(ScenicSpotPageQueryDTO scenicSpotPageQueryDTO);
+    List<ScenicSpotVO> page(ScenicSpotPageQueryDTO scenicSpotPageQueryDTO, String userId);
 
     //根据id查询景点详情
     List<ScenicSpotPic> getDetial(String id);
@@ -23,4 +23,6 @@ public interface ScenicSpotService {
 
     //根据id取消点赞
     void abolishLike(String sceneSpotId, String userId);
+    //根据省份id查询景点
+    List<ScenicSpot> getByPId(String id);
 }

@@ -17,7 +17,26 @@
         <if test="searchBy=='hot'">
           order by likes desc
         </if>
+
+        <if test="searchBy=='new'">
+         order by create_time desc
+        </if>
+
          limit #{offset},#{pageSize}
+    </select>
+    <select id="followeeArticle" resultType="com.example.tour.entity.Article">
+        select * from tour.article
+        <where>
+            <if test="articlePageQueryDTO.condition==null or articlePageQueryDTO.condition==''">
+               and user_id in (select followee_id from tour.followee where user_id=#{userId})
+            </if>
+
+            <if test="articlePageQueryDTO.condition!=null and articlePageQueryDTO.condition!='' ">
+                and user_id=#{articlePageQueryDTO.condition}
+            </if>
+
+        </where>
+        limit #{articlePageQueryDTO.offset},#{articlePageQueryDTO.pageSize}
     </select>
 
 </mapper>

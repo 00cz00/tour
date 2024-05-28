@@ -1,9 +1,13 @@
 package com.example.tour.controller;
 
+import com.example.tour.dto.ArticleDTO;
 import com.example.tour.dto.ArticlePageQueryDTO;
 import com.example.tour.entity.Article;
+import com.example.tour.entity.User;
+import com.example.tour.mapper.ArticleMapper;
 import com.example.tour.result.Result;
 import com.example.tour.service.ArticleService;
+import com.example.tour.service.UserService;
 import com.example.tour.service.impl.ArticleServiceimpl;
 import com.example.tour.service.impl.UserServiceimpl;
 import com.example.tour.utils.JwtUtils;
@@ -26,7 +30,8 @@ import java.util.Queue;
 public class ArticleController {
     @Autowired
     private ArticleService articleServiceimpl;
-
+    @Autowired
+    UserService userService;
 
 
     //文章分页查询
@@ -62,8 +67,8 @@ public class ArticleController {
 
 
     //文章点赞
-    @PostMapping("/ThumbsUp")
-    public Result ThumbsUp(@RequestParam String id,ServletRequest servletRequest) {
+    @PostMapping("/ThumbsUp/{id}")
+    public Result ThumbsUp(@PathVariable("id") String id,ServletRequest servletRequest) {
         System.out.println("asdasdasdsa"+id);
         HttpServletRequest req=(HttpServletRequest) servletRequest;
         String jwt = req.getHeader("jwt");
@@ -74,8 +79,8 @@ public class ArticleController {
     }
 
     //文章取消点赞
-    @PostMapping("/disThumbsUp")
-    public Result disThumbsUp(String id,ServletRequest servletRequest) {
+    @PostMapping("/disThumbsUp/{id}")
+    public Result disThumbsUp(@PathVariable String id,ServletRequest servletRequest) {
         HttpServletRequest req=(HttpServletRequest) servletRequest;
         String jwt = req.getHeader("jwt");
         Claims claims = JwtUtils.parserJwt(jwt);
@@ -86,15 +91,15 @@ public class ArticleController {
 
 
     //删除文章
-    @PostMapping("/delete")
-    public Result delete(String id){
+    @PostMapping("/delete/{id}")
+    public Result delete(@PathVariable String id){
         articleServiceimpl.delete(id);
         return Result.success("删除成功");
     }
 
     //根据文章id查询文章详细内容
-    @PostMapping("/detial")
-    public Result<ArticleDetialVO> getArticleDetial(String id,ServletRequest servletRequest){
+    @GetMapping ("/detail/{id}")
+    public Result<ArticleDetialVO> getArticleDetial(@PathVariable String id,ServletRequest servletRequest){
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         String userId = "null";
 
@@ -109,7 +114,6 @@ public class ArticleController {
 
         } catch (Exception e) {
 
-
         }finally {
             ArticleDetialVO articleDetialVO=articleServiceimpl.getById(id,userId);
             return Result.success(articleDetialVO);
@@ -118,4 +122,35 @@ public class ArticleController {
 
 
     }
+    //关注的作者发布的文章
+    @PostMapping("/follow/page")
+    public  Result<List<ArticlePageQueryVO>> followeeArticle(@RequestBody ArticlePageQueryDTO articlePageQueryDTO,ServletRequest servletRequest){
+        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+        Claims claims = JwtUtils.parserJwt(jwt);
+        String userId = (String) claims.get("id");
+        /*List<User> userList= userService.selectFollowee(userId);
+        for (:
+             ) {
+
+        }*/
+
+        List<ArticlePageQueryVO> articlePageQueryVOList= articleServiceimpl.followeeArticle(articlePageQueryDTO,userId);
+
+
+        return  Result.success(articlePageQueryVOList);
+    }
+
+    //发布文章
+    @PostMapping("/publish")
+    public Result publish(@RequestBody ArticleDTO articleDTO,ServletRequest servletRequest){
+        HttpServletRequest req=(HttpServletRequest) servletRequest;
+        String jwt = req.getHeader("jwt");
+        Claims claims = JwtUtils.parserJwt(jwt);
+        String userId = (String) claims.get("id");
+        articleDTO.setUserId(userId);
+        articleServiceimpl.publish(articleDTO);
+        return Result.success();
+    }
+
 }

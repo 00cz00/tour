@@ -2,6 +2,7 @@ package com.example.tour.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.tour.dto.UserLoginDTO;
+import com.example.tour.dto.UserUpdateInfoDTO;
 import com.example.tour.entity.User;
 import com.example.tour.result.Result;
 
@@ -29,4 +30,8 @@ public interface UserService  {
 
 
     User getByEmail(String email);
+
+    void userUpdateInfo(String userId, UserUpdateInfoDTO userUpdateInfoDTO);
+
+    void userUpdatePassword(String userId, String password);
 }

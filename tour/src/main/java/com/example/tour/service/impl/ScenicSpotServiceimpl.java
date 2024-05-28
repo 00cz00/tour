@@ -1,17 +1,20 @@
 package com.example.tour.service.impl;
 
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
+import com.example.tour.entity.ScenicSpotLike;
 import com.example.tour.entity.ScenicSpot;
 import com.example.tour.entity.ScenicSpotPic;
-import com.example.tour.mapper.SceneSpotLikeMapper;
-import com.example.tour.mapper.SceneSpotPicMapper;
+import com.example.tour.mapper.ProvinceMapper;
+import com.example.tour.mapper.ScenicSpotLikeMapper;
+import com.example.tour.mapper.ScenicSpotPicMapper;
 import com.example.tour.mapper.ScenicSpotMapper;
 import com.example.tour.service.ScenicSpotService;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import com.example.tour.vo.ScenicSpotVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,14 +22,18 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
     @Autowired
     private ScenicSpotMapper scenicSpotMapper;
     @Autowired
-    private SceneSpotPicMapper sceneSpotPicMapper;
+    private ScenicSpotPicMapper sceneSpotPicMapper;
     @Autowired
-    private SceneSpotLikeMapper sceneSpotLikeMapper;
+    private ScenicSpotLikeMapper sceneSpotLikeMapper;
+    @Autowired
+    private ProvinceMapper provinceMapper;
+    @Autowired
+    private ScenicSpotLikeMapper scenicSpotLikeMapper;
 
 
 
     @Override
-    public List<ScenicSpot> page(ScenicSpotPageQueryDTO scenicSpotPageQueryDTO) {
+    public List<ScenicSpotVO> page(ScenicSpotPageQueryDTO scenicSpotPageQueryDTO, String userId) {
 
         int offset=(scenicSpotPageQueryDTO.getPage()-1)*scenicSpotPageQueryDTO.getPageSize();
         scenicSpotPageQueryDTO.setOffset(offset);
@@ -34,25 +41,27 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
             //PageHelper.startPage(scenicSpotPageQueryDTO.getPage(),scenicSpotPageQueryDTO.getPageSize());
         List<ScenicSpot> scenicSpotList= scenicSpotMapper.page(scenicSpotPageQueryDTO);
 
-            //List<ScenicSpot> scenicSpotList=page.getResult();
+        List<ScenicSpotVO> scenicSpotVOList=new ArrayList<>();
+        for(ScenicSpot scenicSpot:scenicSpotList){
+            ScenicSpotVO scenicSpotVO=new ScenicSpotVO();
+            BeanUtils.copyProperties(scenicSpot,scenicSpotVO);
+            //根据id查出对应省份名
+            String provinceName=provinceMapper.getById(scenicSpot.getProvinceId());
+            scenicSpotVO.setProvinceName(provinceName);
 
-           /* //判断是最热还是最新
-            if(scenicSpotPageQueryDTO.getSearchBy().equals("hot")){
-                ScenicSpot temper;
+            //判断用户是否点赞该景点
+            ScenicSpotLike scenicSpotLike=sceneSpotLikeMapper.getByBcoth(scenicSpot.getId(),userId);
 
-                for (int i=0;i<scenicSpotList.size()-1;i++){
-                    for (int j=i+1;j<scenicSpotList.size();j++){
+            if(scenicSpotLike!=null){
+                scenicSpotVO.setIsLiked(1);
+            }
+            scenicSpotVOList.add(scenicSpotVO);
 
-                        if(scenicSpotList.get(i).getLike()<scenicSpotList.get(j).getLike()){
-                            temper=scenicSpotList.get(i);
-                            scenicSpotList.set(i,scenicSpotList.get(j));
-                            scenicSpotList.set(j,temper);
+        }
 
-                        }
-                    }
-                }
-            }*/
-        return scenicSpotList;
+
+
+        return scenicSpotVOList;
         }
     //根据景点id查询详情
     @Override
@@ -85,6 +94,13 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
     public void abolishLike(String sceneSpotId, String userId) {
         scenicSpotMapper.abolishLike(sceneSpotId);
         sceneSpotLikeMapper.deleteBySIdAndUId(sceneSpotId,userId);
+    }
+
+    @Override
+    public List<ScenicSpot> getByPId(String id) {
+        List<ScenicSpot> scenicSpotList=scenicSpotMapper.getByPId(id);
+
+        return scenicSpotList;
     }
 
 

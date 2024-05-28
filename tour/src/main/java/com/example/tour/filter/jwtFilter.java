@@ -24,7 +24,7 @@ public class jwtFilter implements Filter {
 
 
         if(url.contains("/login")||url.contains("/reg")||url.contains("/article/page") ||  url.contains("/uploadImgToOSS")||url.contains("/user/userInfo")||
-        url.contains("/send")){
+        url.contains("/send")||url.contains("/scenicSpot/page") ||url.contains("/article/detail/") ||url.contains("/scenicSpot/detail/") || url.contains("/deleteAliOss")){
             filterChain.doFilter(servletRequest,servletResponse);
             return;
         }

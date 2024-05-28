@@ -1,7 +1,9 @@
 package com.example.tour.service.impl;
 
 
+import com.example.tour.dto.ArticleDTO;
 import com.example.tour.dto.ArticlePageQueryDTO;
+import com.example.tour.dto.CommentDTO;
 import com.example.tour.entity.*;
 import com.example.tour.mapper.*;
 
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -121,8 +124,9 @@ public class ArticleServiceimpl implements ArticleService {
     }
 
     @Override
-    public void comment(String articleId, String content, String userId) {
-        commentMapper.comment(articleId,content,userId);
+    public void comment(CommentDTO commentDTO, String userId) {
+        commentDTO.setCreateTime(LocalDateTime.now());
+        commentMapper.comment(commentDTO,userId);
     }
 
     //根据文章id查询具体内容
@@ -193,11 +197,119 @@ public class ArticleServiceimpl implements ArticleService {
     public void delete(String id) {
         articleMapper.delete(id);
         collectionMapper.articleDelete(id);
+        articleLikeMapper.deleteByArticleId(id);
+        commentMapper.deleteByArticleId(id);
+
+
     }
 
     @Override
     public void disThumbsUp(String id, String userId) {
         articleMapper.disThumbsUp(id);
         articleLikeMapper.disThumbsUp(id,userId);
+    }
+
+    @Override
+    public void abolishCollect(String userId, String articleId) {
+        collectionMapper.abolishCollect(userId,articleId);
+    }
+
+    @Override
+    public List<ArticlePageQueryVO> followeeArticle(ArticlePageQueryDTO articlePageQueryDTO, String userId) {
+        int offset=(articlePageQueryDTO.getPage()-1)*articlePageQueryDTO.getPageSize();
+        articlePageQueryDTO.setOffset(offset);
+        List<Article> articles=articleMapper.followeeArticle(articlePageQueryDTO,userId);
+        List<ArticlePageQueryVO> articlePageQueryVOList=new ArrayList<>();
+        for(Article a:articles){
+
+                ArticlePageQueryVO articlePageQueryVO=new ArticlePageQueryVO();
+                BeanUtils.copyProperties(a,articlePageQueryVO);
+
+                //根据userId查询作者信息
+                User user= userMapper.getById(a.getUserId());
+                user.setPassword("****");
+                articlePageQueryVO.setUser(user);
+
+                //根据文章id查询其收藏数
+                int collection= collectionMapper.countCollection(a.getId());
+                articlePageQueryVO.setCollection(collection);
+
+                //根据文章id查询其评论数
+                int comment = commentMapper.countComment(a.getId());
+                articlePageQueryVO.setComment(comment);
+
+                //根据省份id查出其名称
+                String provinceName=provinceMapper.getById(a.getProvinceId());
+                articlePageQueryVO.setProvince(provinceName);
+
+                //根据登录用户id和文章id判断是否收藏该文章
+                Collections collection1=collectionMapper.isCollected(userId,a.getId());
+                if(collection1!=null){
+                    articlePageQueryVO.setIsCollected(1);
+                }
+
+                //根据登录用户id和文章id判断是否点赞该文章
+                articleLike articleLike=articleLikeMapper.isLike(userId,a.getId());
+                if (articleLike!=null){
+                    articlePageQueryVO.setIsLiked(1);
+                }
+                articlePageQueryVOList.add(articlePageQueryVO);
+
+        }
+
+
+        return articlePageQueryVOList;
+    }
+
+    //查询用户点赞的文章
+    @Override
+    public List<ArticlePageQueryVO> like(String id) {
+        List<Article> articles=articleMapper.getById(id);
+        List<ArticlePageQueryVO> articlePageQueryVOList=new ArrayList<>();
+        for (Article a:articles){
+
+            ArticlePageQueryVO articlePageQueryVO=new ArticlePageQueryVO();
+            BeanUtils.copyProperties(a,articlePageQueryVO);
+
+            //根据userId查询作者信息
+            User user= userMapper.getById(a.getUserId());
+            user.setPassword("****");
+            articlePageQueryVO.setUser(user);
+
+            //根据文章id查询其收藏数
+            int collection= collectionMapper.countCollection(a.getId());
+            articlePageQueryVO.setCollection(collection);
+
+            //根据文章id查询其评论数
+            int comment = commentMapper.countComment(a.getId());
+            articlePageQueryVO.setComment(comment);
+
+            //根据省份id查出其名称
+            String provinceName=provinceMapper.getById(a.getProvinceId());
+            articlePageQueryVO.setProvince(provinceName);
+
+            //根据登录用户id和文章id判断是否收藏该文章
+            Collections collection1=collectionMapper.isCollected(id,a.getId());
+            if(collection1!=null){
+                articlePageQueryVO.setIsCollected(1);
+            }
+
+            //根据登录用户id和文章id判断是否点赞该文章
+            articleLike articleLike=articleLikeMapper.isLike(id,a.getId());
+            if (articleLike!=null){
+                articlePageQueryVO.setIsLiked(1);
+            }
+            articlePageQueryVOList.add(articlePageQueryVO);
+
+        }
+        return articlePageQueryVOList;
+    }
+
+    //发布文章
+    @Override
+    public void publish(ArticleDTO articleDTO) {
+        articleDTO.setLikes(0);
+        articleDTO.setCreateTime(LocalDateTime.now());
+        articleMapper.add(articleDTO);
     }
 }

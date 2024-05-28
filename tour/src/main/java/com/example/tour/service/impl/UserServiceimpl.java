@@ -2,6 +2,7 @@ package com.example.tour.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.tour.dto.UserLoginDTO;
+import com.example.tour.dto.UserUpdateInfoDTO;
 import com.example.tour.entity.EmailProperties;
 import com.example.tour.entity.User;
 import com.example.tour.entity.VerificationCode;
@@ -13,6 +14,8 @@ import com.example.tour.utils.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.tour.utils.VerificationCodeUtil;
+import org.springframework.util.DigestUtils;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,13 +36,15 @@ public class UserServiceimpl implements UserService {
 
     @Override
     public User login( String email, String password) {
-        return userMapper.login(email,password);
+        String md5=DigestUtils.md5DigestAsHex(password.getBytes());
+        return userMapper.login(email,md5);
     }
 
     @Override
     public void reg(String email, String password, String username,String url) {
         LocalDateTime now=LocalDateTime.now();
-        userMapper.reg(email,password,username,now,url);
+        String md5= DigestUtils.md5DigestAsHex(password.getBytes());
+        userMapper.reg(email,md5,username,now,url);
     }
 
     @Override
@@ -78,5 +83,16 @@ public class UserServiceimpl implements UserService {
     public User getByEmail(String email) {
         User user =userMapper.getByEmail(email);
         return user;
+    }
+
+    @Override
+    public void userUpdateInfo(String userId, UserUpdateInfoDTO userUpdateInfoDTO) {
+        userMapper.userUpdateInfo(userId,userUpdateInfoDTO);
+    }
+
+    @Override
+    public void userUpdatePassword(String userId, String password) {
+        String md5=DigestUtils.md5DigestAsHex(password.getBytes());
+        userMapper.userUpdatePassword(userId,md5);
     }
 }

@@ -20,4 +20,7 @@ public interface CollectionMapper {
     void articleDelete(String id);
     @Insert("insert into collection(user_id,article_id) values (#{userId},#{id})")
     void collectArticle(String userId, String id);
+
+    @Delete("delete from tour.collection where user_id=#{userId} and article_id=#{articleId}")
+    void abolishCollect(String userId, String articleId);
 }

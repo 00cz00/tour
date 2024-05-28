@@ -15,4 +15,7 @@ public interface ArticleLikeMapper {
     void insert(String id, String userId);
     @Delete("delete from tour.article_like where user_id=#{userId} and article_id=#{id}")
     void disThumbsUp(String id, String userId);
+
+    @Delete("delete from tour.article_like where article_id=#{id}")
+    void deleteByArticleId(String id);
 }

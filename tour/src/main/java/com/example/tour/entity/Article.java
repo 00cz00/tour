@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -18,6 +21,7 @@ public class Article {
    private int likes;//点赞数
    private int provinceId;//文章对应的省份id
    private int scenicSpotId;//文章对应的景点id
+   private LocalDateTime createTime;//发布时间
 
 
 }

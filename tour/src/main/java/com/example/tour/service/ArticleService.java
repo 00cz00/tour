@@ -1,6 +1,8 @@
 package com.example.tour.service;
 
+import com.example.tour.dto.ArticleDTO;
 import com.example.tour.dto.ArticlePageQueryDTO;
+import com.example.tour.dto.CommentDTO;
 import com.example.tour.entity.Article;
 import com.example.tour.vo.ArticleDetialVO;
 import com.example.tour.vo.ArticlePageQueryVO;
@@ -18,7 +20,7 @@ public interface ArticleService {
 
     void collectArticle(String userId, String id);
 
-    void comment(String articleId, String content, String userId);
+    void comment(CommentDTO commentDTO, String userId);
 
     //根据id查询文章具体内容
     ArticleDetialVO getById(String id,String userId);
@@ -28,4 +30,16 @@ public interface ArticleService {
     void delete(String id);
 
     void disThumbsUp(String id, String userId);
+
+    //取消收藏
+    void abolishCollect(String userId, String articleId);
+
+    //查找用户关注的作者发布的文章
+    List<ArticlePageQueryVO> followeeArticle(ArticlePageQueryDTO articlePageQueryDTO, String userId);
+
+    //查询用户点赞的文章
+    List<ArticlePageQueryVO> like(String id);
+
+    //发布文章
+    void publish(ArticleDTO articleDTO);
 }

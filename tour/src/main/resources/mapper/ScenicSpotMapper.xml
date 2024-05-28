@@ -8,8 +8,8 @@
          <where>
              <if test="condition != null and condition!='' ">
 
-                 and scene_rollcall=#{condition} or province_id= (select id from tour.province
-                                                                         where province_name=#{condition})
+                 and scene_roll_call=#{condition} or province_id = (select id from tour.province
+                                                                         where province_name like concat('%',#{condition},'%') )
 
              </if>
          </where>

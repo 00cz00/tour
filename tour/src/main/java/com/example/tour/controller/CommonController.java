@@ -4,11 +4,15 @@ import com.example.tour.result.Result;
 import com.example.tour.utils.AliYunOssUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.UUID;
 @Slf4j
+@RestController
 public class CommonController {
 
     //文件上传
@@ -31,5 +35,18 @@ public class CommonController {
         }
 
         return Result.error("文件上传失败");
+    }
+
+
+
+    //上传图片到oss并返回url
+    @PostMapping("/deleteAliOss")
+    public void deleteImageToOSS(String url) {
+
+        System.out.println(url);
+        String[] arr=url.split("/");
+        System.out.println(arr[3]);
+        AliYunOssUtils.delete(arr[3]);
+
     }
 }

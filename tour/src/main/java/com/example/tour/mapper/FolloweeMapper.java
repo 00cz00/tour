@@ -15,7 +15,7 @@ public interface FolloweeMapper {
     void followee(String userId,String id);
     @Select("SELECT * from user where id in (select followee_id from followee where user_id=#{userId})")
     List<User> selectFollowee(String userId);
-    @Delete("delete from followee where followee_id=#{id} and id=#{userId}")
+    @Delete("delete from followee where followee_id=#{id} and user_id=#{userId}")
     void deleteFollowee(String id,String userId);
     @Delete("delete from followee where followee_id=#{id}")
     void deleteUser(String id);
