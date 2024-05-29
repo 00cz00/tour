@@ -13,7 +13,7 @@ public interface ScenicSpotService {
     List<ScenicSpotVO> page(ScenicSpotPageQueryDTO scenicSpotPageQueryDTO, String userId);
 
     //根据id查询景点详情
-    List<ScenicSpotPic> getDetial(String id);
+    ScenicSpotVO getDetial(String id,String userId);
 
     //根据id删除景点
     void delete(String id);

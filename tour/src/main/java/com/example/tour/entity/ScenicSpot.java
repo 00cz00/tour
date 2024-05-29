@@ -10,7 +10,7 @@ import java.security.PrivateKey;
 @NoArgsConstructor
 public class ScenicSpot {
     //id
-    private Long id;
+    private String id;
     //景点名
     private String sceneRollCall;
     //所属省份id
@@ -19,4 +19,8 @@ public class ScenicSpot {
     private int likes;
     //图片url
     private String url;
+    //视频url
+    private String videoUrl;
+    //描述
+    private String content;
 }

@@ -120,6 +120,8 @@ public class ArticleServiceimpl implements ArticleService {
 
     @Override
     public void collectArticle(String userId, String id) {
+
+
         collectionMapper.collectArticle(userId,id);
     }
 
@@ -135,7 +137,11 @@ public class ArticleServiceimpl implements ArticleService {
         Article article=articleMapper.getBy(id);
         ArticleDetialVO articleDetialVO=new ArticleDetialVO();
 
+        String createTime = article.getCreateTime().toString();
+        createTime = createTime.replace("T", " ");
         BeanUtils.copyProperties(article,articleDetialVO);
+      //  BeanUtils.copyProperties(a,articlePageQueryVO);
+         articleDetialVO.setCreateTime(createTime);
 
         //根据userId查询作者信息
         User user= userMapper.getById(article.getUserId());

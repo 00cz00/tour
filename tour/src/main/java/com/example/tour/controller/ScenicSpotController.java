@@ -55,11 +55,32 @@ public class ScenicSpotController {
 
     //景点具体内容查询
     @GetMapping("/detail/{sceneSpotId}")
-    public  Result<List<ScenicSpotPic>> detial(@PathVariable String sceneSpotId){
+    public  Result<ScenicSpotVO> detial(@PathVariable String sceneSpotId,ServletRequest servletRequest){
         log.info("查询的景点id：{}",sceneSpotId);
-        List<ScenicSpotPic> scenicSpotPicList=scenicSpotServiceimpl.getDetial(sceneSpotId);
 
-        return Result.success(scenicSpotPicList);
+
+
+        HttpServletRequest req = (HttpServletRequest) servletRequest;
+        String userId = "null";
+
+        String jwt = req.getHeader("jwt");
+
+        log.info("jwt撒大大:" + jwt);
+        try {
+            Claims claims = JwtUtils.parserJwt(jwt);
+            userId = (String) claims.get("id");
+
+            log.info("啊哒哒哒userid={}",userId);
+
+        } catch (Exception e) {
+
+        }finally {
+
+            ScenicSpotVO scenicSpotVO=scenicSpotServiceimpl.getDetial(sceneSpotId,userId);
+
+            return Result.success(scenicSpotVO);
+        }
+
     }
 
     //根据景点id删除景点
@@ -101,5 +122,15 @@ public class ScenicSpotController {
         return Result.success(scenicSpotList);
 
     }
+
+  /*  //修改景点信息
+    @PostMapping("/updata/{id}")
+    public Result updata(@RequestBody ScenicSpot scenicSpot){
+
+
+
+    }*/
+
+
 
 }

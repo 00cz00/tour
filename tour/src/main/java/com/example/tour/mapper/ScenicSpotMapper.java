@@ -2,6 +2,7 @@ package com.example.tour.mapper;
 
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
 import com.example.tour.entity.ScenicSpot;
+import com.example.tour.entity.ScenicSpotPic;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,12 +20,15 @@ public interface ScenicSpotMapper {
      @Delete("delete from tour.scenic_spot where id=#{id}")
     void deleteById(String id);
 
-     @Update("update tour.scenic_spot set likes=#{likes+1} where id=#{sceneSpotId}")
+     @Update("update tour.scenic_spot set likes=(likes+1) where id=#{sceneSpotId}")
     void Like(String sceneSpotId);
 
-    @Update("update tour.scenic_spot set likes=#{likes-1} where id=#{sceneSpotId}")
+    @Update("update tour.scenic_spot set likes=(likes-1) where id=#{sceneSpotId}")
     void abolishLike(String sceneSpotId);
 
     @Select("select * from tour.scenic_spot where province_id=#{id}")
     List<ScenicSpot> getByPId(String id);
+
+    @Select("select * from tour.scenic_spot where id=#{id}")
+    ScenicSpot getById(String id);
 }

@@ -8,9 +8,9 @@
         <where>
             <if test="condition!=null and condition!='' ">
                 and title like concat('%',#{condition},'%') or province_id= (select id from tour.province
-                                                                          where province_name=#{condition})
+                                                                          where province_name like concat('%',#{condition},'%'))
                                                                              or scenic_spot_id=(select id from tour.scenic_spot
-                                                                                    where scene_rollcall=#{condition})
+                                                                                    where scene_rollcall like concat('%',#{condition},'%'))
             </if>
         </where>
 

@@ -50,7 +50,7 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
             scenicSpotVO.setProvinceName(provinceName);
 
             //判断用户是否点赞该景点
-            ScenicSpotLike scenicSpotLike=sceneSpotLikeMapper.getByBcoth(scenicSpot.getId(),userId);
+            ScenicSpotLike scenicSpotLike=sceneSpotLikeMapper.getByBoth(scenicSpot.getId(),userId);
 
             if(scenicSpotLike!=null){
                 scenicSpotVO.setIsLiked(1);
@@ -65,10 +65,16 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
         }
     //根据景点id查询详情
     @Override
-    public List<ScenicSpotPic> getDetial(String id) {
-        List<ScenicSpotPic> scenicSpotPicList=sceneSpotPicMapper.getBySceneSpotId(id);
+    public ScenicSpotVO getDetial(String id,String userId) {
+        ScenicSpot scenicSpot=scenicSpotMapper.getById(id);
+        ScenicSpotVO scenicSpotVO=new ScenicSpotVO();
+        BeanUtils.copyProperties(scenicSpot,scenicSpotVO);
+        ScenicSpotLike scenicSpotLike=sceneSpotLikeMapper.getByBoth(id,userId);
+        if (scenicSpotLike!=null){
+            scenicSpotVO.setIsLiked(1);
+        }
 
-        return scenicSpotPicList;
+        return scenicSpotVO;
 
     }
 

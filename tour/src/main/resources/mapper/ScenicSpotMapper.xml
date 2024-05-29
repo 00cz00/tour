@@ -8,7 +8,7 @@
          <where>
              <if test="condition != null and condition!='' ">
 
-                 and scene_roll_call=#{condition} or province_id = (select id from tour.province
+                 and scene_rollcall like concat('%',#{condition},'%') or province_id = (select id from tour.province
                                                                          where province_name like concat('%',#{condition},'%') )
 
              </if>

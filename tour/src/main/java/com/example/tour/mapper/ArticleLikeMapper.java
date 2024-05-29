@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface ArticleLikeMapper {
-    @Select("select * from tour.article_like where user_id=#{userId} and article_id=#{id}")
+    @Select("select * from tour.article_like where user_id=#{userId} and article_id=#{id} order by id desc")
     articleLike isLike(String userId, long id);
 
     @Insert("insert into tour.article_like(user_id, article_id) values (#{userId},#{id})")

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ScenicSpotVO {
 
     //id
-    private Long id;
+    private String id;
     //景点名
     private String sceneRollCall;
     //所属省份id
@@ -22,6 +22,10 @@ public class ScenicSpotVO {
     private int likes;
     //图片url
     private String url;
+    //视频url
+    private String videoUrl;
+    //描述
+    private String content;
     //是否点赞
     private int isLiked;
 }

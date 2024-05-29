@@ -18,13 +18,13 @@ public interface ArticleMapper {
     //文章分页查询
 
     Page<Article> page(ArticlePageQueryDTO articlePageQueryDTO);
-    @Select("select * from article where id in (select article_id from collection  where user_id=#{userId})")
+    @Select("select * from article where id in (select article_id from collection  where user_id=#{userId} ) order by id desc")
     List<Article> selectCollection(String userId);
     @Update("update article set likes=(likes+1) where id=#{id}")
     void ThumbsUp(String id);
     @Delete("delete from article where id=#{id}")
     void delete(String id);
-    @Select("select * from article where user_id=#{userId}")
+    @Select("select * from article where user_id=#{userId} order by id desc")
     List<Article> selectMyArticle(String userId);
 
     @Select("select * from tour.article where id=#{id}")
@@ -32,9 +32,9 @@ public interface ArticleMapper {
     @Update("update article set likes=(likes-1) where id=#{id}")
     void disThumbsUp(String id);
 
-    @Select("select * from tour.article where id in (select article_id from tour.article_like where user_id=#{id} )")
+    @Select("select * from tour.article where id in (select article_id from tour.article_like where user_id=#{id})order by id desc")
   List<Article> getById(String id);
-@Insert("insert into tour.article( user_id, title, content, likes, province_id, scenic_spot_id, url,create_time) values(#{userId},#{title},#{content},#{likes}" +
+   @Insert("insert into tour.article( user_id, title, content, likes, province_id, scenic_spot_id, url,create_time) values(#{userId},#{title},#{content},#{likes}" +
         ",#{provinceId},#{scenicSpotId},#{url},#{createTime}) ")
     void add(ArticleDTO articleDTO);
 }

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 
 public class ScenicSpotLike {
-    private  int id;
+    private  String id;
     private int userId;
     private int scenicSpotId;
 }

@@ -226,10 +226,10 @@ public class UserController {
             ArticlePageQueryVO articlePageQueryVO=new ArticlePageQueryVO();
             BeanUtils.copyProperties(a,articlePageQueryVO);
 
-           /* //根据userId查询作者信息
+            //根据userId查询作者信息
             User user= userMapper.getById(a.getUserId());
             user.setPassword("****");
-            articlePageQueryVO.setUser(user);*/
+            articlePageQueryVO.setUser(user);
 
             //根据文章id查询其收藏数
             int collection= collectionMapper.countCollection(a.getId());
@@ -420,7 +420,7 @@ public class UserController {
     }
 
     //查询轮播图
-    @GetMapping("/bannerlect")
+    @GetMapping("/banner/select")
     public Result<List<Banner>> bannerSelect(){
         List<Banner> list= bannerService.bannerSelect();
         return Result.success(list);

@@ -1,5 +1,6 @@
 package com.example.tour.mapper;
 
+import com.example.tour.entity.ScenicSpot;
 import com.example.tour.entity.ScenicSpotLike;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -18,5 +19,5 @@ public interface ScenicSpotLikeMapper {
     @Delete("delete from tour.scenic_spot_like where scenic_spot_id=#{scenicSpotId} and user_id=#{userId}")
     void deleteBySIdAndUId(String scenicSpotId, String userId);
    @Select("select * from tour.scenic_spot_like where user_id=#{userId} and scenic_spot_id=#{id}")
-    ScenicSpotLike getByBcoth(Long id, String userId);
+    ScenicSpotLike getByBoth(String id, String userId);
 }
