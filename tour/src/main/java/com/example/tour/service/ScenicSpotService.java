@@ -1,5 +1,6 @@
 package com.example.tour.service;
 
+import com.example.tour.dto.AdminScenicSpotUpdateDTO;
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
 import com.example.tour.entity.ScenicSpot;
 import com.example.tour.entity.ScenicSpotPic;
@@ -26,4 +27,5 @@ public interface ScenicSpotService {
     //根据省份id查询景点
     List<ScenicSpot> getByPId(String id);
 
+    void AdminScenicSpotUpdate(AdminScenicSpotUpdateDTO adminScenicSpotUpdateDTO);
 }

@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.tour.mapper.UserMapper">
+    <select id="selectUserByUserName" resultType="com.example.tour.entity.User">
+        select * from tour.user
+        <where>
+            <if test="userName != null and userName!='' ">
 
+              username like concat('%',#{userName},'%')
+
+            </if>
+        </where>
+        limit #{offset},#{pageSize}
+    </select>
 
 </mapper>

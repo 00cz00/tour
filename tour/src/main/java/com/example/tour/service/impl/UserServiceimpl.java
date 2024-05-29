@@ -1,7 +1,7 @@
 package com.example.tour.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.tour.dto.UserLoginDTO;
+import com.example.tour.dto.AdminSelectUser;
+import com.example.tour.dto.AdminUserUpdateDTO;
 import com.example.tour.dto.UserUpdateInfoDTO;
 import com.example.tour.entity.Article;
 import com.example.tour.entity.EmailProperties;
@@ -13,10 +13,8 @@ import com.example.tour.service.UserService;
 import com.example.tour.utils.MailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.tour.utils.VerificationCodeUtil;
 import org.springframework.util.DigestUtils;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -118,5 +116,18 @@ public class UserServiceimpl implements UserService {
     public void userUpdatePassword(String userId, String password) {
         String md5=DigestUtils.md5DigestAsHex(password.getBytes());
         userMapper.userUpdatePassword(userId,md5);
+    }
+
+    @Override
+    public void AdminUserUpdate(AdminUserUpdateDTO adminUserUpdateDTO) {
+        String md5Password = DigestUtils.md5DigestAsHex(adminUserUpdateDTO.getPassword().getBytes());
+        adminUserUpdateDTO.setPassword(md5Password);
+        userMapper.AdminUserUpdate(adminUserUpdateDTO);
+    }
+
+    @Override
+    public List<User> selectUserByUserName(AdminSelectUser adminSelectUser) {
+
+      return   userMapper.selectUserByUserName(adminSelectUser);
     }
 }

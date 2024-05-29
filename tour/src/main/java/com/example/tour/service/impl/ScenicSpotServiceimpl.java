@@ -1,5 +1,6 @@
 package com.example.tour.service.impl;
 
+import com.example.tour.dto.AdminScenicSpotUpdateDTO;
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
 import com.example.tour.entity.ScenicSpotLike;
 import com.example.tour.entity.ScenicSpot;
@@ -118,6 +119,10 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
         return scenicSpotList;
     }
 
+    @Override
+    public void AdminScenicSpotUpdate(AdminScenicSpotUpdateDTO adminScenicSpotUpdateDTO) {
+        scenicSpotMapper.AdminScenicSpotUpdate(adminScenicSpotUpdateDTO);
+    }
 
 
 }

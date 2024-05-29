@@ -1,5 +1,6 @@
 package com.example.tour.mapper;
 
+import com.example.tour.dto.AdminScenicSpotUpdateDTO;
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
 import com.example.tour.entity.ScenicSpot;
 import com.example.tour.entity.ScenicSpotPic;
@@ -32,5 +33,6 @@ public interface ScenicSpotMapper {
     @Select("select * from tour.scenic_spot where id=#{id}")
     ScenicSpot getById(String id);
 
-
+    @Update("update tour.scenic_spot set likes=#{likes},scene_rollcall=#{sceneRollCall},province_id=#{provinceId},url=#{url},video_url=#{videoUrl},content=#{content} where id=#{id}")
+    void AdminScenicSpotUpdate(AdminScenicSpotUpdateDTO adminScenicSpotUpdateDTO);
 }

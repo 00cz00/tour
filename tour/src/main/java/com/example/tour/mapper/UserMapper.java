@@ -1,9 +1,10 @@
 package com.example.tour.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.tour.dto.UserLoginDTO;
+import com.example.tour.dto.AdminSelectUser;
+import com.example.tour.dto.AdminUserUpdateDTO;
 import com.example.tour.dto.UserUpdateInfoDTO;
 import com.example.tour.entity.User;
+import com.example.tour.result.Result;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -26,4 +27,8 @@ public interface UserMapper {
     void userUpdateInfo(String userId, UserUpdateInfoDTO userUpdateInfoDTO);
     @Update("update user set password=#{password} where id=#{userId}")
     void userUpdatePassword(String userId, String password);
+    @Update("update user set username=#{username} ,url=#{url},password=#{password},email=#{email},create_time=#{createTime} where id=#{id}")
+    void AdminUserUpdate(AdminUserUpdateDTO adminUserUpdateDTO);
+
+    List<User> selectUserByUserName(AdminSelectUser adminSelectUser);
 }
