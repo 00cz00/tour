@@ -17,7 +17,7 @@ public interface ScenicSpotMapper {
 
      Page<ScenicSpot> page(ScenicSpotPageQueryDTO scenicSpotPageQueryDTO);
 
-     @Delete("delete from tour.scenic_spot where id=#{id}")
+     @Delete("delete from scenic_spot where id=#{id}")
     void deleteById(String id);
 
      @Update("update tour.scenic_spot set likes=(likes+1) where id=#{sceneSpotId}")
@@ -31,4 +31,6 @@ public interface ScenicSpotMapper {
 
     @Select("select * from tour.scenic_spot where id=#{id}")
     ScenicSpot getById(String id);
+
+
 }

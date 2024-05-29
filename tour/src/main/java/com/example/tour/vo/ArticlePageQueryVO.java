@@ -21,7 +21,7 @@ public class ArticlePageQueryVO {
     private String url;     //背景图
     private String province; //省份
     private String scenicSpot; //景点
-    private LocalDateTime createTime;//发布时间
+    private String createTime;//发布时间
     private int likes;        //点赞数
     private int collection; //收藏数
     private int comment;    //评论数

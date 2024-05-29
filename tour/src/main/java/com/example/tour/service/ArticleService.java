@@ -42,4 +42,6 @@ public interface ArticleService {
 
     //发布文章
     void publish(ArticleDTO articleDTO);
+
+    List<Integer> selectByScenicSport(String id);
 }

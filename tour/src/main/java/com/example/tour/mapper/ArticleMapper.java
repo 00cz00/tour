@@ -37,4 +37,8 @@ public interface ArticleMapper {
    @Insert("insert into tour.article( user_id, title, content, likes, province_id, scenic_spot_id, url,create_time) values(#{userId},#{title},#{content},#{likes}" +
         ",#{provinceId},#{scenicSpotId},#{url},#{createTime}) ")
     void add(ArticleDTO articleDTO);
+  @Select("select id from tour.article where scenic_spot_id=#{id}")
+  List<Integer> selectByScenicSport(String id);
+  @Delete("delete from article where user_id=#{id}")
+  void deleteByUser(String id);
 }

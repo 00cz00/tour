@@ -18,4 +18,6 @@ public interface ArticleLikeMapper {
 
     @Delete("delete from tour.article_like where article_id=#{id}")
     void deleteByArticleId(String id);
+    @Delete("delete from tour.article_like where user_id=#{id} ")
+    void deleteByUser(String id);
 }

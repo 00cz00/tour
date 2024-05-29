@@ -318,4 +318,9 @@ public class ArticleServiceimpl implements ArticleService {
         articleDTO.setCreateTime(LocalDateTime.now());
         articleMapper.add(articleDTO);
     }
+
+    @Override
+    public List<Integer> selectByScenicSport(String id) {
+       return articleMapper.selectByScenicSport(id);
+    }
 }

@@ -90,12 +90,7 @@ public class ArticleController {
     }
 
 
-    //删除文章
-    @PostMapping("/delete/{id}")
-    public Result delete(@PathVariable String id){
-        articleServiceimpl.delete(id);
-        return Result.success("删除成功");
-    }
+
 
     //根据文章id查询文章详细内容
     @GetMapping ("/detail/{id}")

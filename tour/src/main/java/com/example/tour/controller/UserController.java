@@ -15,12 +15,10 @@ import com.example.tour.vo.UserLoginVO;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -153,12 +151,6 @@ public class UserController {
     }
 
 
-    //用户删除
-    @PostMapping("/deleteUser")
-    public Result deleteUser(String id){
-        userService.deleteUser(id);
-        return Result.success("删除成功");
-    }
 
 
 
@@ -220,12 +212,16 @@ public class UserController {
         Claims claims = JwtUtils.parserJwt(jwt);
         String userId = (String) claims.get("id");
         List<Article> articleList=articleService.selectMyArticle(userId);
+
         List<ArticlePageQueryVO>  articlePageQueryVOList=new ArrayList<>();
 
         for(Article a:articleList){
             ArticlePageQueryVO articlePageQueryVO=new ArticlePageQueryVO();
-            BeanUtils.copyProperties(a,articlePageQueryVO);
+            String createTime = a.getCreateTime().toString();
+            createTime = createTime.replace("T", " ");
 
+            BeanUtils.copyProperties(a,articlePageQueryVO);
+            articlePageQueryVO.setCreateTime(createTime);
             //根据userId查询作者信息
             User user= userMapper.getById(a.getUserId());
             user.setPassword("****");
@@ -258,6 +254,7 @@ public class UserController {
             articlePageQueryVOList.add(articlePageQueryVO);
 
         }
+
         return  Result.success(articlePageQueryVOList);
     }
 

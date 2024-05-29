@@ -24,4 +24,6 @@ public interface CommentMapper {
 
     @Delete("delete from tour.comment where article_id=#{id}")
     void deleteByArticleId(String id);
+    @Delete("delete from tour.comment where user_id=#{id}")
+    void deleteByUser(String id);
 }

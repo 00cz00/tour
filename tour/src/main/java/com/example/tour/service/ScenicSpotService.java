@@ -25,4 +25,5 @@ public interface ScenicSpotService {
     void abolishLike(String sceneSpotId, String userId);
     //根据省份id查询景点
     List<ScenicSpot> getByPId(String id);
+
 }

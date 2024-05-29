@@ -3,11 +3,11 @@ package com.example.tour.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.tour.dto.UserLoginDTO;
 import com.example.tour.dto.UserUpdateInfoDTO;
+import com.example.tour.entity.Article;
 import com.example.tour.entity.EmailProperties;
 import com.example.tour.entity.User;
 import com.example.tour.entity.VerificationCode;
-import com.example.tour.mapper.FolloweeMapper;
-import com.example.tour.mapper.UserMapper;
+import com.example.tour.mapper.*;
 import com.example.tour.result.Result;
 import com.example.tour.service.UserService;
 import com.example.tour.utils.MailUtil;
@@ -28,6 +28,18 @@ public class UserServiceimpl implements UserService {
     FolloweeMapper followeeMapper;
     @Autowired
     private EmailProperties emailProperties;
+    @Autowired
+    ScenicSpotLikeMapper scenicSpotLikeMapper;
+    @Autowired
+    CommentMapper commentMapper;
+    @Autowired
+    ArticleMapper articleMapper;
+    @Autowired
+    ArticleLikeMapper articleLikeMapper;
+    @Autowired
+    CollectionMapper collectionMapper;
+    @Autowired
+    ArticleServiceimpl articleServiceimpl;
 
     @Override
     public User getUserById(String id) {
@@ -64,8 +76,20 @@ public class UserServiceimpl implements UserService {
 
     @Override
     public void deleteUser(String id) {
+        //删除与用户有关的所有东西
         userMapper.deleteUser(id);
         followeeMapper.deleteUser(id);
+        scenicSpotLikeMapper.deleteByUser(id);
+        commentMapper.deleteByUser(id);
+        List<Article> articleList = articleMapper.selectMyArticle(id);
+        for (Article a:
+             articleList) {
+            long id1 = a.getId();
+            articleServiceimpl.delete(String.valueOf(id1));
+        }
+        articleMapper.deleteByUser(id);
+        articleLikeMapper.deleteByUser(id);
+        collectionMapper.deleteByUser(id);
     }
 
 

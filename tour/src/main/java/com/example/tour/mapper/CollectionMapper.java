@@ -23,4 +23,6 @@ public interface CollectionMapper {
 
     @Delete("delete from tour.collection where user_id=#{userId} and article_id=#{articleId}")
     void abolishCollect(String userId, String articleId);
+    @Delete("delete from tour.collection where user_id=#{id}")
+    void deleteByUser(String id);
 }

@@ -8,6 +8,7 @@ import com.example.tour.mapper.ProvinceMapper;
 import com.example.tour.mapper.ScenicSpotLikeMapper;
 import com.example.tour.mapper.ScenicSpotPicMapper;
 import com.example.tour.mapper.ScenicSpotMapper;
+import com.example.tour.service.ArticleService;
 import com.example.tour.service.ScenicSpotService;
 import com.example.tour.vo.ScenicSpotVO;
 import org.springframework.beans.BeanUtils;
@@ -29,7 +30,8 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
     private ProvinceMapper provinceMapper;
     @Autowired
     private ScenicSpotLikeMapper scenicSpotLikeMapper;
-
+    @Autowired
+    ArticleService articleService;
 
 
     @Override
@@ -81,9 +83,16 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
     //根据id删除景点
     @Override
     public void delete(String id) {
+        //删除景点 景点图片 景点喜欢
         scenicSpotMapper.deleteById(id);
         sceneSpotPicMapper.deleteBySceneSpotId(id);
         sceneSpotLikeMapper.deleteBySceneSpotId(id);
+        //删除景点相关文章
+        List<Integer> articleList=articleService.selectByScenicSport(id);
+        for (int a:
+             articleList) {
+            articleService.delete(String.valueOf(a));
+        }
 
     }
 
@@ -108,6 +117,7 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
 
         return scenicSpotList;
     }
+
 
 
 }
