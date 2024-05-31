@@ -17,4 +17,15 @@ public class BannerServiceimpl implements BannerService {
       return   bannerMapper.bannerSelect();
 
     }
+
+    //删除轮播图
+    @Override
+    public void deleteById(String id) {
+        bannerMapper.deldetById(id);
+    }
+
+    @Override
+    public void add(Banner banner) {
+        bannerMapper.add(banner);
+    }
 }

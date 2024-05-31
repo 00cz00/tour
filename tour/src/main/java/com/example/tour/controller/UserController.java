@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -35,7 +34,8 @@ public class UserController {
     ArticleService articleService;
    @Autowired
     UserMapper userMapper;
-
+   @Autowired
+   private BannerService bannerService;
 
     @Autowired
     private CollectionMapper collectionMapper;
@@ -45,16 +45,12 @@ public class UserController {
     private CommentMapper commentMapper;
     @Autowired
     private ProvinceMapper provinceMapper;
-    @Autowired
-    private BannerService bannerService;
+
     //根据id查人
     @GetMapping("/userById")
     public User getUserById(String id){
        return userService.getUserById(id);
     }
-
-
-
 
     //注册
     @PostMapping("/reg")
@@ -193,7 +189,7 @@ public class UserController {
             }
 
             //根据登录用户id和文章id判断是否点赞该文章
-            articleLike articleLike=articleLikeMapper.isLike(userId,a.getId());
+            ArticleLike articleLike=articleLikeMapper.isLike(userId,a.getId());
             if (articleLike!=null){
                 articlePageQueryVO.setIsLiked(1);
             }
@@ -246,7 +242,7 @@ public class UserController {
             }
 
             //根据登录用户id和文章id判断是否点赞该文章
-            articleLike articleLike=articleLikeMapper.isLike(userId,a.getId());
+            ArticleLike articleLike=articleLikeMapper.isLike(userId,a.getId());
             if (articleLike!=null){
                 articlePageQueryVO.setIsLiked(1);
             }
@@ -415,6 +411,7 @@ public class UserController {
         userService.userUpdatePassword(userId,userUpdatePasswordDTO.getNewPassword());
         return Result.success("修改成功");
     }
+
 
     //查询轮播图
     @GetMapping("/banner/select")

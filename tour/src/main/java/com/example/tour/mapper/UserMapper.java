@@ -5,6 +5,7 @@ import com.example.tour.dto.AdminUserUpdateDTO;
 import com.example.tour.dto.UserUpdateInfoDTO;
 import com.example.tour.entity.User;
 import com.example.tour.result.Result;
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -27,8 +28,11 @@ public interface UserMapper {
     void userUpdateInfo(String userId, UserUpdateInfoDTO userUpdateInfoDTO);
     @Update("update user set password=#{password} where id=#{userId}")
     void userUpdatePassword(String userId, String password);
-    @Update("update user set username=#{username} ,url=#{url},password=#{password},email=#{email},create_time=#{createTime} where id=#{id}")
+    @Update("update user set username=#{username} ,url=#{url} where id=#{id}")
     void AdminUserUpdate(AdminUserUpdateDTO adminUserUpdateDTO);
 
-    List<User> selectUserByUserName(AdminSelectUser adminSelectUser);
+    Page<User> selectUserByUserName(AdminSelectUser adminSelectUser);
+
+    @Select("select count(*) from tour.user")
+    int countAll();
 }

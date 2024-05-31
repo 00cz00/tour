@@ -19,4 +19,25 @@
                    limit #{offset},#{pageSize}
     </select>
 
+    <select id="countAll" resultType="java.lang.Integer">
+        select count(*) from tour.scenic_spot
+        <where>
+            <if test="provinceId!=null and provinceId!='' and provinceId!='undefined' and provinceId!='全部省份'">
+                province_id=#{provinceId}
+            </if>
+        </where>
+    </select>
+
+    <select id="adminScenicSpotPage" resultType="com.example.tour.entity.ScenicSpot">
+        select * from tour.scenic_spot
+        <where>
+            <if test="provinceId!=null and provinceId!='' and provinceId!='全部省份'">
+                and province_id=#{provinceId}
+            </if>
+            <if test="condition!=null and condition!=''">
+                and scene_rollcall like concat('%',#{condition},'%')
+            </if>
+        </where>
+    </select>
+
 </mapper>

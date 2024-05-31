@@ -1,9 +1,11 @@
 package com.example.tour.service;
 
+import com.example.tour.dto.AdminarticlePageQueryDTO;
 import com.example.tour.dto.ArticleDTO;
 import com.example.tour.dto.ArticlePageQueryDTO;
 import com.example.tour.dto.CommentDTO;
 import com.example.tour.entity.Article;
+import com.example.tour.result.PageResult;
 import com.example.tour.vo.ArticleDetialVO;
 import com.example.tour.vo.ArticlePageQueryVO;
 
@@ -44,4 +46,7 @@ public interface ArticleService {
     void publish(ArticleDTO articleDTO);
 
     List<Integer> selectByScenicSport(String id);
+
+    //管理端分页查询
+    PageResult adminArticlePage(AdminarticlePageQueryDTO adminarticlePageQueryDTO);
 }

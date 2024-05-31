@@ -4,6 +4,7 @@ import com.example.tour.dto.AdminSelectUser;
 import com.example.tour.dto.AdminUserUpdateDTO;
 import com.example.tour.dto.UserUpdateInfoDTO;
 import com.example.tour.entity.User;
+import com.example.tour.result.PageResult;
 import com.example.tour.result.Result;
 
 import java.util.List;
@@ -37,5 +38,7 @@ public interface UserService  {
 
     void AdminUserUpdate(AdminUserUpdateDTO adminUserUpdateDTO);
 
-    List<User> selectUserByUserName(AdminSelectUser adminSelectUser);
+    PageResult selectUserByUsername(AdminSelectUser adminSelectUser);
+
+    int countAllUser();
 }

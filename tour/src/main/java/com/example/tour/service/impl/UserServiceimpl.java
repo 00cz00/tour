@@ -8,9 +8,12 @@ import com.example.tour.entity.EmailProperties;
 import com.example.tour.entity.User;
 import com.example.tour.entity.VerificationCode;
 import com.example.tour.mapper.*;
+import com.example.tour.result.PageResult;
 import com.example.tour.result.Result;
 import com.example.tour.service.UserService;
 import com.example.tour.utils.MailUtil;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -126,8 +129,18 @@ public class UserServiceimpl implements UserService {
     }
 
     @Override
-    public List<User> selectUserByUserName(AdminSelectUser adminSelectUser) {
+    public PageResult selectUserByUsername(AdminSelectUser adminSelectUser) {
+        /*int offset=(adminSelectUser.getPage()-1)*adminSelectUser.getPageSize();
+        adminSelectUser.setOffset(offset);*/
+        PageHelper.startPage(adminSelectUser.getPage(),adminSelectUser.getPageSize());
+        Page<User> page= userMapper.selectUserByUserName(adminSelectUser);
+        PageResult pageResult=new PageResult(page.getTotal(), page.getResult());
+      return  pageResult;
+    }
 
-      return   userMapper.selectUserByUserName(adminSelectUser);
+    @Override
+    public int countAllUser() {
+        int all=userMapper.countAll();
+        return all;
     }
 }

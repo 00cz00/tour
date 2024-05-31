@@ -1,5 +1,6 @@
 package com.example.tour.mapper;
 
+import com.example.tour.dto.AdminarticlePageQueryDTO;
 import com.example.tour.dto.ArticleDTO;
 import com.example.tour.dto.ArticlePageQueryDTO;
 import com.example.tour.entity.Article;
@@ -41,4 +42,7 @@ public interface ArticleMapper {
   List<Integer> selectByScenicSport(String id);
   @Delete("delete from article where user_id=#{id}")
   void deleteByUser(String id);
+
+  //管理端分页查询
+  Page<Article> adminPage(AdminarticlePageQueryDTO adminarticlePageQueryDTO);
 }

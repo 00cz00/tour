@@ -78,6 +78,10 @@ public class ScenicSpotController {
 
             ScenicSpotVO scenicSpotVO=scenicSpotServiceimpl.getDetial(sceneSpotId,userId);
 
+            System.out.println("asdasdas");
+
+            System.out.println(scenicSpotVO);
+
             return Result.success(scenicSpotVO);
         }
 

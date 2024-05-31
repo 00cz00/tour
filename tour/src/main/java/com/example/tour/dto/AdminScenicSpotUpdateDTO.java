@@ -10,6 +10,8 @@ public class AdminScenicSpotUpdateDTO {
     private String sceneRollCall;
     //所属省份id
     private int provinceId;
+    //
+    private String provinceName;
     //点赞数
     private int likes;
     //图片url

@@ -17,6 +17,10 @@ public class ScenicSpotVO {
     //景点名
     private String sceneRollCall;
     //所属省份id
+
+    //
+    private int provinceId;
+
     private String provinceName;
     //点赞数
     private int likes;

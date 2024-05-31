@@ -5,13 +5,12 @@
     <select id="selectUserByUserName" resultType="com.example.tour.entity.User">
         select * from tour.user
         <where>
-            <if test="userName != null and userName!='' ">
+            <if test="condition != null and condition!='' ">
 
-              username like concat('%',#{userName},'%')
+              username like concat('%',#{condition},'%')
 
             </if>
         </where>
-        limit #{offset},#{pageSize}
     </select>
 
 </mapper>

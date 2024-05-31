@@ -1,14 +1,13 @@
 package com.example.tour.mapper;
 
+import com.example.tour.dto.AdminScenicSpotPageDTO;
 import com.example.tour.dto.AdminScenicSpotUpdateDTO;
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
 import com.example.tour.entity.ScenicSpot;
 import com.example.tour.entity.ScenicSpotPic;
+import com.example.tour.result.PageResult;
 import com.github.pagehelper.Page;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -35,4 +34,16 @@ public interface ScenicSpotMapper {
 
     @Update("update tour.scenic_spot set likes=#{likes},scene_rollcall=#{sceneRollCall},province_id=#{provinceId},url=#{url},video_url=#{videoUrl},content=#{content} where id=#{id}")
     void AdminScenicSpotUpdate(AdminScenicSpotUpdateDTO adminScenicSpotUpdateDTO);
+
+    //添加景点
+    @Insert("insert into tour.scenic_spot(scene_rollcall, province_id, likes, url, video_url, content) values(#{sceneRollCall}," +
+            "#{provinceId},#{likes},#{url},#{videoUrl},#{content}) ")
+    void insert(AdminScenicSpotUpdateDTO adminScenicSpotUpdateDTO);
+
+    //管理端分页查询
+    Page<ScenicSpot> adminScenicSpotPage(AdminScenicSpotPageDTO adminScenicSpotPageDTO);
+
+    //统计全部景点
+   // @Select("select count(*) from tour.scenic_spot")
+    int countAll(String provinceId);
 }

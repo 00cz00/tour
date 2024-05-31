@@ -1,9 +1,11 @@
 package com.example.tour.service;
 
+import com.example.tour.dto.AdminScenicSpotPageDTO;
 import com.example.tour.dto.AdminScenicSpotUpdateDTO;
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
 import com.example.tour.entity.ScenicSpot;
 import com.example.tour.entity.ScenicSpotPic;
+import com.example.tour.result.PageResult;
 import com.example.tour.vo.ScenicSpotVO;
 
 
@@ -28,4 +30,13 @@ public interface ScenicSpotService {
     List<ScenicSpot> getByPId(String id);
 
     void AdminScenicSpotUpdate(AdminScenicSpotUpdateDTO adminScenicSpotUpdateDTO);
+
+    //增加景点
+    void add(AdminScenicSpotUpdateDTO adminScenicSpotUpdateDTO);
+
+    //管理端景点分页查询
+    PageResult adminScenicSpotPage(AdminScenicSpotPageDTO adminScenicSpotPageDTO);
+
+    //统计全部景点
+    int countAll(String provinceId);
 }

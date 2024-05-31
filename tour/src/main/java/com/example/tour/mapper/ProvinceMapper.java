@@ -14,4 +14,7 @@ public interface ProvinceMapper {
 
     @Select("select * from tour.province ")
     List<Province> getAll();
+
+    @Select("select id from tour.province where province_name=#{provinceName}")
+    int getByProvinceName(String provinceName);
 }

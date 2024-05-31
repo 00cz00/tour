@@ -1,5 +1,6 @@
 package com.example.tour.service.impl;
 
+import com.example.tour.dto.AdminScenicSpotPageDTO;
 import com.example.tour.dto.AdminScenicSpotUpdateDTO;
 import com.example.tour.dto.ScenicSpotPageQueryDTO;
 import com.example.tour.entity.ScenicSpotLike;
@@ -9,9 +10,12 @@ import com.example.tour.mapper.ProvinceMapper;
 import com.example.tour.mapper.ScenicSpotLikeMapper;
 import com.example.tour.mapper.ScenicSpotPicMapper;
 import com.example.tour.mapper.ScenicSpotMapper;
+import com.example.tour.result.PageResult;
 import com.example.tour.service.ArticleService;
 import com.example.tour.service.ScenicSpotService;
 import com.example.tour.vo.ScenicSpotVO;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,8 +74,13 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
     @Override
     public ScenicSpotVO getDetial(String id,String userId) {
         ScenicSpot scenicSpot=scenicSpotMapper.getById(id);
+
         ScenicSpotVO scenicSpotVO=new ScenicSpotVO();
         BeanUtils.copyProperties(scenicSpot,scenicSpotVO);
+
+        String provinceName=provinceMapper.getById(scenicSpot.getProvinceId());
+        scenicSpotVO.setProvinceName(provinceName);
+
         ScenicSpotLike scenicSpotLike=sceneSpotLikeMapper.getByBoth(id,userId);
         if (scenicSpotLike!=null){
             scenicSpotVO.setIsLiked(1);
@@ -121,7 +130,53 @@ public class ScenicSpotServiceimpl implements ScenicSpotService {
 
     @Override
     public void AdminScenicSpotUpdate(AdminScenicSpotUpdateDTO adminScenicSpotUpdateDTO) {
+        int provinceId=provinceMapper.getByProvinceName(adminScenicSpotUpdateDTO.getProvinceName());
+        adminScenicSpotUpdateDTO.setProvinceId(provinceId);
         scenicSpotMapper.AdminScenicSpotUpdate(adminScenicSpotUpdateDTO);
+    }
+
+    //添加景点
+    @Override
+    public void add(AdminScenicSpotUpdateDTO adminScenicSpotUpdateDTO) {
+        int provinceId=provinceMapper.getByProvinceName(adminScenicSpotUpdateDTO.getProvinceName());
+        adminScenicSpotUpdateDTO.setProvinceId(provinceId);
+
+        adminScenicSpotUpdateDTO.setLikes(0);
+        scenicSpotMapper.insert(adminScenicSpotUpdateDTO);
+    }
+
+    @Override
+    public PageResult adminScenicSpotPage(AdminScenicSpotPageDTO adminScenicSpotPageDTO) {
+        PageHelper.startPage(adminScenicSpotPageDTO.getPage(),adminScenicSpotPageDTO.getPageSize());
+
+        Page<ScenicSpot> page=  scenicSpotMapper.adminScenicSpotPage(adminScenicSpotPageDTO);
+
+        List<ScenicSpot> scenicSpotList=page.getResult();
+        List<ScenicSpotVO> scenicSpotVOList=new ArrayList<>();
+
+        for(ScenicSpot scenicSpot:scenicSpotList){
+
+            ScenicSpotVO scenicSpotVO=new ScenicSpotVO();
+            BeanUtils.copyProperties(scenicSpot,scenicSpotVO);
+
+            String provinceName=provinceMapper.getById(scenicSpot.getProvinceId());
+            scenicSpotVO.setProvinceName(provinceName);
+
+            scenicSpotVOList.add(scenicSpotVO);
+        }
+
+        PageResult pageResult=new PageResult(page.getTotal(),scenicSpotVOList);
+        return pageResult;
+
+
+
+
+    }
+
+    @Override
+    public int countAll(String provinceId) {
+        int total=scenicSpotMapper.countAll(provinceId);
+        return total;
     }
 
 
