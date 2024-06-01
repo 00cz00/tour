@@ -333,9 +333,15 @@ public class ArticleServiceimpl implements ArticleService {
         List<Article> articleList = page.getResult();
         List<ArticlePageQueryVO> articlePageQueryVOList = new ArrayList<>();
         for (Article a : articleList) {
-            ArticlePageQueryVO articlePageQueryVO = new ArticlePageQueryVO();
 
+
+            //  BeanUtils.copyProperties(a,articlePageQueryVO);
+            ArticlePageQueryVO articlePageQueryVO = new ArticlePageQueryVO();
             BeanUtils.copyProperties(a, articlePageQueryVO);
+
+            String createTime = a.getCreateTime().toString();
+            createTime = createTime.replace("T", " ");
+            articlePageQueryVO.setCreateTime(createTime);
 
 
             //根据userId查询作者信息

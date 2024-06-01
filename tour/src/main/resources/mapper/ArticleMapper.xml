@@ -43,12 +43,12 @@
         select * from tour.article
         <where>
             <if test="condition!=null and condition!='' ">
-                title like concat('%',#{condition},'%') or scenic_spot_id=(select id from tour.scenic_spot
+               and (title like concat('%',#{condition},'%') or scenic_spot_id=(select id from tour.scenic_spot
                                                                                 where scene_rollcall like concat('%',#{condition},'%'))
                                                             or user_id=(select id from tour.user
-                                                                         where username like concat('%',#{condition},'%'))
+                                                                         where username like concat('%',#{condition},'%')))
             </if>
-            <if test="provinceId!=null and provinceId!=''">
+            <if test="provinceId!=null and provinceId!='' and provinceId!='全部省份' ">
                and province_id=#{provinceId}
             </if>
         </where>

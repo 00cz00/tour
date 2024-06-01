@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CommentDetialVO {
 
+    private String id;
     private User user;//评论的用户
     private String content; //评论的详细内容
     private LocalDateTime createTime;//发布时间

@@ -76,7 +76,7 @@ public class AdminController {
 
     }*/
     //删除文章
-    @PostMapping("/article/delete/{id}")
+    @DeleteMapping("/article/delete/{id}")
     public Result delete(@PathVariable String id){
         articleServiceimpl.delete(id);
         return Result.success("删除成功");
@@ -97,7 +97,7 @@ public class AdminController {
 
 
     //删除评论
-    @PostMapping("/deleteComment/{id}")
+    @DeleteMapping("/comment/delete/{id}")
     public Result deleteComment(@PathVariable String id){
         commentMapper.deleteById(id);
         return Result.success("删除成功");
