@@ -34,8 +34,7 @@ public class ArticleController {
     private ArticleService articleServiceimpl;
     @Autowired
     UserService userService;
-    @Autowired
-    private RedisTemplate redisTemplate;
+
 
     //文章分页查询
     @PostMapping("/page")
@@ -57,7 +56,6 @@ public class ArticleController {
 
             }finally {
                 List<ArticlePageQueryVO> articlePageQueryVOList = articleServiceimpl.page(articlePageQueryDTO, userId);
-                redisTemplate.opsForValue().set("文章",articlePageQueryVOList,12, TimeUnit.HOURS);
                 return Result.success(articlePageQueryVOList);
             }
 

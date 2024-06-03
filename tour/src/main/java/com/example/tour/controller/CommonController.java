@@ -39,7 +39,7 @@ public class CommonController {
 
 
 
-    //上传图片到oss并返回url
+    //删除图片到oss并返回url
     @PostMapping("/deleteAliOss")
     public void deleteImageToOSS(String url) {
 

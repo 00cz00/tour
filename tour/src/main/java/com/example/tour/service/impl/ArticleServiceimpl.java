@@ -58,7 +58,7 @@ public class ArticleServiceimpl implements ArticleService {
 
             //根据userId查询作者信息
             User user = userMapper.getById(a.getUserId());
-            user.setPassword("****");
+            ///user.setPassword("****");
             articlePageQueryVO.setUser(user);
 
             //根据文章id查询其收藏数

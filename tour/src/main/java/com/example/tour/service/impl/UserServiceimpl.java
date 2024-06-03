@@ -15,11 +15,14 @@ import com.example.tour.utils.MailUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -41,6 +44,9 @@ public class UserServiceimpl implements UserService {
     CollectionMapper collectionMapper;
     @Autowired
     ArticleServiceimpl articleServiceimpl;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public User getUserById(String id) {
@@ -75,10 +81,11 @@ public class UserServiceimpl implements UserService {
         followeeMapper.deleteFollowee(id,userId);
     }
 
+
     @Override
     public void deleteUser(String id) {
         //删除与用户有关的所有东西
-        userMapper.deleteUser(id);
+
         followeeMapper.deleteUser(id);
         scenicSpotLikeMapper.deleteByUser(id);
         commentMapper.deleteByUser(id);
@@ -91,6 +98,7 @@ public class UserServiceimpl implements UserService {
         articleMapper.deleteByUser(id);
         articleLikeMapper.deleteByUser(id);
         collectionMapper.deleteByUser(id);
+        userMapper.deleteUser(id);
     }
 
 
@@ -98,6 +106,7 @@ public class UserServiceimpl implements UserService {
         String code = com.example.tour.utils.VerificationCodeUtil.generateCode();
         try {
             MailUtil.sendMail(emailProperties, email, "图迹", "你的验证码是：" + code + "\n验证码在一分钟内有效\n请勿泄露给他人");
+            redisTemplate.opsForValue().set(email,code,5, TimeUnit.MINUTES);
             return Result.success(new VerificationCode(code, LocalDateTime.now()));
         } catch (Exception e) {
             return Result.error(e.getMessage());

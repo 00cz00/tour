@@ -7,9 +7,9 @@
         select * from tour.article
         <where>
             <if test="condition!=null and condition!='' ">
-                and title like concat('%',#{condition},'%') or province_id= (select id from tour.province
+                and title like concat('%',#{condition},'%') or province_id in (select id from tour.province
                                                                           where province_name like concat('%',#{condition},'%'))
-                                                                             or scenic_spot_id=(select id from tour.scenic_spot
+                                                                             or scenic_spot_id in (select id from tour.scenic_spot
                                                                                     where scene_rollcall like concat('%',#{condition},'%'))
             </if>
         </where>
@@ -43,9 +43,9 @@
         select * from tour.article
         <where>
             <if test="condition!=null and condition!='' ">
-               and (title like concat('%',#{condition},'%') or scenic_spot_id=(select id from tour.scenic_spot
+               and (title like concat('%',#{condition},'%') or scenic_spot_id in (select id from tour.scenic_spot
                                                                                 where scene_rollcall like concat('%',#{condition},'%'))
-                                                            or user_id=(select id from tour.user
+                                                            or user_id in (select id from tour.user
                                                                          where username like concat('%',#{condition},'%')))
             </if>
             <if test="provinceId!=null and provinceId!='' and provinceId!='全部省份' ">

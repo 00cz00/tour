@@ -8,4 +8,5 @@ public class UserRegDTO {
     private String password;
     private String username;
     private String url;
+    private String code;
 }

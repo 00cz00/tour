@@ -22,10 +22,13 @@ import lombok.Data;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.convert.PeriodUnit;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -139,12 +142,10 @@ public class AdminController {
     @PostMapping("/scenicSpot/page")
     public Result<PageResult> adminScenicSpotPage(@RequestBody AdminScenicSpotPageDTO adminScenicSpotPageDTO){
        PageResult page=scenicSpotService.adminScenicSpotPage(adminScenicSpotPageDTO);
-        System.out.println("awdadawd"+page.getTotal());
-
         return Result.success(page);
     }
     //统计全部景点
-   // @GetMapping("/scenicSpot/total/{provinceId}")
+
     public Result countAllScenicSpot(@PathVariable String provinceId){
         System.out.println("adasda"+provinceId);
         int total=scenicSpotService.countAll(provinceId);
@@ -152,21 +153,26 @@ public class AdminController {
     }
 
     //查询轮播图
+    @Cacheable(cacheNames = "banner",key="")
     @GetMapping("/banner/select")
     public Result<List<Banner>> bannerSelect(){
         List<Banner> list= bannerService.bannerSelect();
-        redisTemplate.opsForValue().set("轮播图",list,12, TimeUnit.HOURS);
         return Result.success(list);
     }
 
     //删除轮播图
+   // @CacheEvict(cacheNames = "banner",allEntries = true)
     @DeleteMapping("/banner/delete/{id}")
     public Result deleteById(@PathVariable String id){
         bannerService.deleteById(id);
-        redisTemplate.delete("轮播图");
+        /*Set<String> keys = redisTemplate.keys("ban*");
+        for (String key : keys) {
+            redisTemplate.delete(key);
+        }*/
         return Result.success();
     }
     //添加轮播图
+    @CacheEvict(cacheNames = "banner",allEntries = true)
     @PostMapping("/banner/add")
     public Result add(@RequestBody Banner banner){
         bannerService.add(banner);

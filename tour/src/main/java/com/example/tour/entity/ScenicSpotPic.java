@@ -5,11 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScenicSpotPic {
+public class ScenicSpotPic implements Serializable {
     private String id;
     private String sceneSpotId; //景点id
     private String url;  //图片url

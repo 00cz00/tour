@@ -19,11 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
@@ -45,6 +48,9 @@ public class UserController {
     private CommentMapper commentMapper;
     @Autowired
     private ProvinceMapper provinceMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
+    //用户删除
 
     //根据id查人
     @GetMapping("/userById")
@@ -63,10 +69,23 @@ public class UserController {
             return Result.error("请填写完整注册信息");
         }
 
-        userService.reg(userRegDTO.getEmail(),userRegDTO.getPassword(),userRegDTO.getUsername(),userRegDTO.getUrl());
+        redisTemplate.opsForValue().get(userRegDTO.getEmail());
 
-        //User usernow=userService.login(userRegDTO.getEmail(),userRegDTO.getPassword());
-        return Result.success();
+        if( redisTemplate.opsForValue().get(userRegDTO.getEmail())==null){
+            return Result.error("验证码已过期");
+        }
+        else {
+            if(redisTemplate.opsForValue().get(userRegDTO.getEmail()).equals(userRegDTO.getCode())){
+                userService.reg(userRegDTO.getEmail(),userRegDTO.getPassword(),userRegDTO.getUsername(),userRegDTO.getUrl());
+                //User usernow=userService.login(userRegDTO.getEmail(),userRegDTO.getPassword());
+                return Result.success();
+            }
+            else {
+                return Result.error("验证码错误");
+            }
+        }
+
+
     }
 
     //发送验证码
@@ -415,6 +434,7 @@ public class UserController {
 
     //查询轮播图
     @GetMapping("/banner/select")
+    @Cacheable(cacheNames = "banner",key="")
     public Result<List<Banner>> bannerSelect(){
         List<Banner> list= bannerService.bannerSelect();
         return Result.success(list);

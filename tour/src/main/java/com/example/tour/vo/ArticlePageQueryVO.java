@@ -7,13 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.swing.border.TitledBorder;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArticlePageQueryVO {
+public class ArticlePageQueryVO implements Serializable {
     private Long id;
     private User user; //作者
     private String title;  //题目

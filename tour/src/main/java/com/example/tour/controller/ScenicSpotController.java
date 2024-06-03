@@ -14,6 +14,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,10 +25,12 @@ import java.util.List;
 public class ScenicSpotController {
     @Autowired
     private ScenicSpotService scenicSpotServiceimpl;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
     @PostMapping("/page")
     //景点分页查询
     public Result<List<ScenicSpotVO>> Page(@RequestBody ScenicSpotPageQueryDTO scenicSpotPageQueryDTO, ServletRequest servletRequest){
+
         log.info("查询的景点：{}",scenicSpotPageQueryDTO);
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         String userId = "null";
