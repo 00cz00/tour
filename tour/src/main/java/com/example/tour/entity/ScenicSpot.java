@@ -3,12 +3,13 @@ package com.example.tour.entity;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.security.PrivateKey;
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScenicSpot {
+public class ScenicSpot  implements Serializable {
     //id
     private String id;
     //景点名

@@ -19,10 +19,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/article")
@@ -32,7 +34,8 @@ public class ArticleController {
     private ArticleService articleServiceimpl;
     @Autowired
     UserService userService;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     //文章分页查询
     @PostMapping("/page")
@@ -54,7 +57,7 @@ public class ArticleController {
 
             }finally {
                 List<ArticlePageQueryVO> articlePageQueryVOList = articleServiceimpl.page(articlePageQueryDTO, userId);
-
+                redisTemplate.opsForValue().set("文章",articlePageQueryVOList,12, TimeUnit.HOURS);
                 return Result.success(articlePageQueryVOList);
             }
 

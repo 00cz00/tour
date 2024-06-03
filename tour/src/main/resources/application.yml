@@ -2,17 +2,21 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:mysql://1.95.50.203:3306/tour?useSSL=false
+    url: jdbc:mysql://localhost:3306/tour?useSSL=false
     username: root
-    password: mysql.hw.2002.yy
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   servlet:
     multipart:
      #单个文件
       max-file-size: 50MB
       #单次请求
       max-request-size: 100MB
+  data:
+    redis:
+      database: 0
+      port: 6379
+      host: localhost
 mybatis:
   mapper-locations: classpath*:/mapper/*.xml
   type-aliases-package: com.example.tour.entity

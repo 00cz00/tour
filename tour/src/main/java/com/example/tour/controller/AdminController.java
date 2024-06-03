@@ -22,9 +22,12 @@ import lombok.Data;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.convert.PeriodUnit;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -39,6 +42,8 @@ public class AdminController {
 
     @Autowired
     private BannerService bannerService;
+    @Autowired
+    private RedisTemplate redisTemplate;
     //用户删除
     @DeleteMapping("/user/delete/{id}")
     public Result deleteUser(@PathVariable  String id){
@@ -150,6 +155,7 @@ public class AdminController {
     @GetMapping("/banner/select")
     public Result<List<Banner>> bannerSelect(){
         List<Banner> list= bannerService.bannerSelect();
+        redisTemplate.opsForValue().set("轮播图",list,12, TimeUnit.HOURS);
         return Result.success(list);
     }
 
@@ -157,6 +163,7 @@ public class AdminController {
     @DeleteMapping("/banner/delete/{id}")
     public Result deleteById(@PathVariable String id){
         bannerService.deleteById(id);
+        redisTemplate.delete("轮播图");
         return Result.success();
     }
     //添加轮播图

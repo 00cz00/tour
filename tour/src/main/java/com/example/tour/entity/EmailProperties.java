@@ -3,9 +3,11 @@ package com.example.tour.entity;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
 @ConfigurationProperties(prefix = "email")
-public class EmailProperties {
+public class EmailProperties  implements Serializable {
     //发件人邮箱
     public String user ;
     //发件人邮箱授权码

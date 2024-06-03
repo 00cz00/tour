@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Article {
+public class Article  implements Serializable {
    private long id;
    private  String userId;//发布人id
    private String title;//文章题目
